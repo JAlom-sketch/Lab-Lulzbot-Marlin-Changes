@@ -1,84 +1,76 @@
 # Marlin 3D Printer Firmware
-<img align="right" src="../../raw/1.1.x/buildroot/share/pixmaps/logo/marlin-250.png" />
 
-Marlin is an optimized firmware for [RepRap 3D printers](http://reprap.org/) based on the [Arduino](https://www.arduino.cc/) platform. First created in 2011 for RepRap and Ultimaker printers, today Marlin drives a majority of the world's most popular 3D printers. Marlin delivers outstanding print quality with unprecedented control over the process.
+![GitHub](https://img.shields.io/github/license/marlinfirmware/marlin.svg)
+![GitHub contributors](https://img.shields.io/github/contributors/marlinfirmware/marlin.svg)
+![GitHub Release Date](https://img.shields.io/github/release-date/marlinfirmware/marlin.svg)
+[![Build Status](https://github.com/MarlinFirmware/Marlin/workflows/CI/badge.svg?branch=bugfix-2.0.x)](https://github.com/MarlinFirmware/Marlin/actions)
 
-[![Coverity Scan Build Status](https://scan.coverity.com/projects/2224/badge.svg)](https://scan.coverity.com/projects/2224)
-[![Travis Build Status](https://travis-ci.org/MarlinFirmware/Marlin.svg)](https://travis-ci.org/MarlinFirmware/Marlin)
-[![Flattr Us!](http://api.flattr.com/button/flattr-badge-large.png)](https://flattr.com/submit/auto?user_id=ErikZalm&url=https://github.com/MarlinFirmware/Marlin&title=Marlin&language=&tags=github&category=software)
+<img align="right" width=175 src="buildroot/share/pixmaps/logo/marlin-250.png" />
 
-## Marlin 1.1.x
+Additional documentation can be found at the [Marlin Home Page](http://marlinfw.org/).
+Please let us know if Marlin misbehaves in any way. Volunteers are standing by!
 
-The 1.1.x branch is home to all tagged releases of Marlin 1.1 (final version 1.1.9 – July 2018).
+## Marlin 2.0
 
-This branch will receive no further updates. All future development —including all bug fixes— will take place in the [`bugfix-2.0.x`](https://github.com/MarlinFirmware/Marlin/tree/bugfix-2.0.x) branch, which will also serve as the root for all future Marlin development. Be sure to test [`bugfix-2.0.x`](https://github.com/MarlinFirmware/Marlin/tree/bugfix-2.0.x) before reporting any bugs you find in 1.1.9.
+Marlin 2.0 takes this popular RepRap firmware to the next level by adding support for much faster 32-bit and ARM-based boards while improving support for 8-bit AVR boards. Read about Marlin's decision to use a "Hardware Abstraction Layer" below.
 
-Marlin 1.1.9 is the final release of the 8-bit flat version of Marlin Firmware. A monumental amount of talent and effort has gone into its production, and thanks are due to many people around the world. Throughout Marlin 1.1 development we worked closely with the community, contributors, vendors, host developers, library developers, etc. to improve the quality, configurability, and compatibility of Marlin Firmware, all while continuing to support a wide variety of Arduino-based boards.
+Download earlier versions of Marlin on the [Releases page](https://github.com/MarlinFirmware/Marlin/releases).
 
-## Marlin 1.0.x
+## Building Marlin 2.0
 
-Previous releases of Marlin include [1.0.2-2](https://github.com/MarlinFirmware/Marlin/tree/1.0.2-2) (December 2016) and [1.0.1](https://github.com/MarlinFirmware/Marlin/tree/1.0.1) (December 2014). Any version of Marlin prior to 1.0.1 (when we started tagging versions) can be collectively referred to as Marlin 1.0.0.
+To build Marlin 2.0 you'll need [Arduino IDE 1.8.8 or newer](https://www.arduino.cc/en/main/software) or [PlatformIO](http://docs.platformio.org/en/latest/ide.html#platformio-ide). Detailed build and install instructions are posted at:
 
-## Contributing to Marlin
+  - [Installing Marlin (Arduino)](http://marlinfw.org/docs/basics/install_arduino.html)
+  - [Installing Marlin (VSCode)](http://marlinfw.org/docs/basics/install_platformio_vscode.html).
 
-If you have coding or writing skills you're encouraged to contribute to Marlin. You may also contribute suggestions, feature requests, and bug reports through the Marlin Issue Queue.
+### Supported Platforms
 
-Before contributing, please read our [Contributing Guidelines](https://github.com/MarlinFirmware/Marlin/blob/1.1.x/.github/contributing.md) and [Code of Conduct](https://github.com/MarlinFirmware/Marlin/blob/1.1.x/.github/code_of_conduct.md).
+  Platform|MCU|Example Boards
+  --------|---|-------
+  [Arduino AVR](https://www.arduino.cc/)|ATmega|RAMPS, Melzi, RAMBo
+  [Teensy++ 2.0](http://www.microchip.com/wwwproducts/en/AT90USB1286)|AT90USB1286|Printrboard
+  [Arduino Due](https://www.arduino.cc/en/Guide/ArduinoDue)|SAM3X8E|RAMPS-FD, RADDS, RAMPS4DUE
+  [LPC1768](http://www.nxp.com/products/microcontrollers-and-processors/arm-based-processors-and-mcus/lpc-cortex-m-mcus/lpc1700-cortex-m3/512kb-flash-64kb-sram-ethernet-usb-lqfp100-package:LPC1768FBD100)|ARM® Cortex-M3|MKS SBASE, Re-ARM, Selena Compact
+  [LPC1769](https://www.nxp.com/products/processors-and-microcontrollers/arm-microcontrollers/general-purpose-mcus/lpc1700-cortex-m3/512kb-flash-64kb-sram-ethernet-usb-lqfp100-package:LPC1769FBD100)|ARM® Cortex-M3|Smoothieboard, Azteeg X5 mini, TH3D EZBoard
+  [STM32F103](https://www.st.com/en/microcontrollers-microprocessors/stm32f103.html)|ARM® Cortex-M3|Malyan M200, GTM32 Pro, MKS Robin, BTT SKR Mini
+  [STM32F401](https://www.st.com/en/microcontrollers-microprocessors/stm32f401.html)|ARM® Cortex-M4|ARMED, Rumba32, SKR Pro, Lerdge, FYSETC S6
+  [STM32F7x6](https://www.st.com/en/microcontrollers-microprocessors/stm32f7x6.html)|ARM® Cortex-M7|The Borg, RemRam V1
+  [SAMD51P20A](https://www.adafruit.com/product/4064)|ARM® Cortex-M4|Adafruit Grand Central M4
+  [Teensy 3.5](https://www.pjrc.com/store/teensy35.html)|ARM® Cortex-M4|
+  [Teensy 3.6](https://www.pjrc.com/store/teensy36.html)|ARM® Cortex-M4|
 
-## Marlin Resources
+## Submitting Changes
 
-- [Marlin Home Page](http://marlinfw.org/) - The latest Marlin documentation.
-- [Marlin Releases](https://github.com/MarlinFirmware/Marlin/releases) - All Marlin releases with release notes.
-- [RepRap.org Wiki Page](http://reprap.org/wiki/Marlin) - An overview of Marlin and its role in RepRap.
-- [Marlin Firmware Forum](http://forums.reprap.org/list.php?415) - Get help with configuration and troubleshooting.
-- [Marlin Firmware Facebook group](https://www.facebook.com/groups/1049718498464482) - Help from the community. (Maintained by [@thinkyhead](https://github.com/thinkyhead).)
-- [@MarlinFirmware](https://twitter.com/MarlinFirmware) on Twitter - Follow for news, release alerts, and tips. (Maintained by [@thinkyhead](https://github.com/thinkyhead).)
+- Submit **Bug Fixes** as Pull Requests to the ([bugfix-2.0.x](https://github.com/MarlinFirmware/Marlin/tree/bugfix-2.0.x)) branch.
+- Submit **New Features** to the ([dev-2.1.x](https://github.com/MarlinFirmware/Marlin/tree/dev-2.1.x)) branch.
+- Follow the [Coding Standards](http://marlinfw.org/docs/development/coding_standards.html) to gain points with the maintainers.
+- Please submit your questions and concerns to the [Issue Queue](https://github.com/MarlinFirmware/Marlin/issues).
+
+## Marlin Support
+
+For best results getting help with configuration and troubleshooting, please use the following resources:
+
+- [Marlin Documentation](http://marlinfw.org) - Official Marlin documentation
+- [Marlin Discord](https://discord.gg/n5NJ59y) - Discuss issues with Marlin users and developers
+- Facebook Group ["Marlin Firmware"](https://www.facebook.com/groups/1049718498464482/)
+- RepRap.org [Marlin Forum](http://forums.reprap.org/list.php?415)
+- [Tom's 3D Forums](https://discuss.toms3d.org/)
+- Facebook Group ["Marlin Firmware for 3D Printers"](https://www.facebook.com/groups/3Dtechtalk/)
+- [Marlin Configuration](https://www.youtube.com/results?search_query=marlin+configuration) on YouTube
 
 ## Credits
 
-Marlin's administrators are:
- - Scott Lahteine [[@thinkyhead](https://github.com/thinkyhead)]
- - Roxanne Neufeld [[@Roxy-3D](https://github.com/Roxy-3D)]
- - Bob Kuhn [[@Bob-the-Kuhn](https://github.com/Bob-the-Kuhn)]
- - Erik van der Zalm [[@ErikZalm](https://github.com/ErikZalm)]
+The current Marlin dev team consists of:
 
-Notable contributors include:
- - Alexey Shvetsov [[@alexxy](https://github.com/alexxy)]
- - Andreas Hardtung [[@AnHardt](https://github.com/AnHardt)]
- - Ben Lye [[@benlye](https://github.com/benlye)]
- - Bernhard Kubicek [[@bkubicek](https://github.com/bkubicek)]
- - Bob Cousins [[@bobc](https://github.com/bobc)]
- - Petr Zahradnik [[@clexpert](https://github.com/clexpert)]
- - Jochen Groppe [[@CONSULitAS](https://github.com/CONSULitAS)]
- - David Braam [[@daid](https://github.com/daid)]
- - Eduardo José Tagle [[@ejtagle](https://github.com/ejtagle)]
- - Ernesto Martinez [[@emartinez167](https://github.com/emartinez167)]
- - Edward Patel [[@epatel](https://github.com/epatel)]
- - F. Malpartida [[@fmalpartida](https://github.com/fmalpartida)]
- - João Brazio [[@jbrazio](https://github.com/jbrazio)]
- - Kai [[@Kaibob2](https://github.com/Kaibob2)]
- - Luc Van Daele [[@LVD-AC](https://github.com/LVD-AC)]
- - Alberto Cotronei [[@MagoKimbra](https://github.com/MagoKimbra)]
- - Marcio Teixeira [[@marcio-ao](https://github.com/marcio-ao)]
- - Chris Palmer [[@nophead](https://github.com/nophead)]
- - Chris Pepper [[@p3p](https://github.com/p3p)]
- - Steeve Spaggi [[@studiodyne](https://github.com/studiodyne)]
- - Thomas Moore [[@tcm0116](https://github.com/tcm0116)]
- - Teemu Mäntykallio [[@teemuatlut](https://github.com/teemuatlut)]
- - Nico Tonnhofer [[@Wurstnase](https://github.com/Wurstnase)]
- - [[@android444](https://github.com/android444)]
- - [[@bgort](https://github.com/bgort)]
- - [[@GMagician](https://github.com/GMagician)]
- - [[@Grogyan](https://github.com/Grogyan)]
- - [[@maverikou](https://github.com/maverikou)]
- - [[@oysteinkrog](https://github.com/oysteinkrog)]
- - [[@paclema](https://github.com/paclema)]
- - [[@paulusjacobus](https://github.com/paulusjacobus)]
- - [[@psavva](https://github.com/psavva)]
- - [[@Tannoo](https://github.com/Tannoo)]
- - [[@TheSFReader](https://github.com/TheSFReader)]
- - ...and many others
+ - Scott Lahteine [[@thinkyhead](https://github.com/thinkyhead)] - USA &nbsp; [Donate](http://www.thinkyhead.com/donate-to-marlin) / Flattr: [![Flattr Scott](http://api.flattr.com/button/flattr-badge-large.png)](https://flattr.com/submit/auto?user_id=thinkyhead&url=https://github.com/MarlinFirmware/Marlin&title=Marlin&language=&tags=github&category=software)
+ - Roxanne Neufeld [[@Roxy-3D](https://github.com/Roxy-3D)] - USA
+ - Chris Pepper [[@p3p](https://github.com/p3p)] - UK
+ - Bob Kuhn [[@Bob-the-Kuhn](https://github.com/Bob-the-Kuhn)] - USA
+ - João Brazio [[@jbrazio](https://github.com/jbrazio)] - Portugal
+ - Erik van der Zalm [[@ErikZalm](https://github.com/ErikZalm)] - Netherlands &nbsp; [![Flattr Erik](http://api.flattr.com/button/flattr-badge-large.png)](https://flattr.com/submit/auto?user_id=ErikZalm&url=https://github.com/MarlinFirmware/Marlin&title=Marlin&language=&tags=github&category=software)
 
 ## License
 
-Marlin is published under the [GPLv3 license](https://github.com/MarlinFirmware/Marlin/blob/1.0.x/COPYING.md) because we believe in open development. The GPL comes with both rights and obligations. Whether you use Marlin firmware as the driver for your open or closed-source product, you must keep Marlin open, and you must provide your compatible Marlin source code to end users upon request. The most straightforward way to comply with the Marlin license is to make a fork of Marlin on Github, perform your modifications, and direct users to your modified fork.
+Marlin is published under the [GPL license](/LICENSE) because we believe in open development. The GPL comes with both rights and obligations. Whether you use Marlin firmware as the driver for your open or closed-source product, you must keep Marlin open, and you must provide your compatible Marlin source code to end users upon request. The most straightforward way to comply with the Marlin license is to make a fork of Marlin on Github, perform your modifications, and direct users to your modified fork.
+
+While we can't prevent the use of this code in products (3D printers, CNC, etc.) that are closed source or crippled by a patent, we would prefer that you choose another firmware or, better yet, make your own.
