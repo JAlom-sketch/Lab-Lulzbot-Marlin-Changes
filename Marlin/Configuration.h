@@ -1,5 +1,5 @@
 /**
- * Marlin 3D Printer Firmware
+ * pMarlin 3D Printer Firmware
  * Copyright (c) 2020 MarlinFirmware [https://github.com/MarlinFirmware/Marlin]
  *
  * Based on Sprinter and grbl.
@@ -136,7 +136,7 @@
 
 // Printer's unique ID, used by some programs to differentiate between machines.
 // Choose your own or use a service like http://www.uuidgenerator.net/version4
-//#define MACHINE_UUID "00000000-0000-0000-0000-000000000000"
+#define MACHINE_UUID "e5502411-d46d-421d-ba3a-a20126d7930f"
 
 // @section extruder
 
@@ -307,8 +307,8 @@
 // Offset of the extruders (uncomment if using more than one and relying on firmware to position when changing).
 // The offset has to be X=0, Y=0 for the extruder 0 hotend (default extruder).
 // For the other hotends it is their distance from the extruder 0 hotend.
-#define HOTEND_OFFSET_X { 0.0, 20.00 } // changed, uncommented (mm) relative X-offset for each nozzle
-#define HOTEND_OFFSET_Y { 0.0, 5.00 }  // changed, uncommented (mm) relative Y-offset for each nozzle
+#define HOTEND_OFFSET_X { 0.0, 0.0 } // changed, uncommented (mm) relative X-offset for each nozzle
+#define HOTEND_OFFSET_Y { 0.0, 0.0 }  // changed, uncommented (mm) relative Y-offset for each nozzle
 #define HOTEND_OFFSET_Z { 0.0, 0.00 }  // changed, uncommented (mm) relative Z-offset for each nozzle
 
 // @section machine
@@ -612,10 +612,10 @@
 // Specify here all the endstop connectors that are connected to any endstop or probe.
 // Almost all printers will be using one per axis. Probes will use one or more of the
 // extra connectors. Leave undefined any used for non-endstop and non-probe purposes.
-#define USE_XMIN_PLUG
+#define USE_XMIN_PLUG //changed
 //#define USE_YMIN_PLUG //changed
-#define USE_ZMIN_PLUG
-//#define USE_XMAX_PLUG
+#define USE_ZMIN_PLUG //changed
+//#define USE_XMAX_PLUG //changed
 #define USE_YMAX_PLUG //changed
 #define USE_ZMAX_PLUG //changed
 
@@ -637,22 +637,22 @@
 #if DISABLED(ENDSTOPPULLDOWNS)
   // Disable ENDSTOPPULLDOWNS to set pulldowns individually
   //#define ENDSTOPPULLDOWN_XMAX
-  //#define ENDSTOPPULLDOWN_YMAX
+  //#define ENDSTOPPULLDOWN_YMAX //changed
   //#define ENDSTOPPULLDOWN_ZMAX
-  //#define ENDSTOPPULLDOWN_XMIN
+  //#define ENDSTOPPULLDOWN_XMIN //changed
   //#define ENDSTOPPULLDOWN_YMIN
   //#define ENDSTOPPULLDOWN_ZMIN
   //#define ENDSTOPPULLDOWN_ZMIN_PROBE
 #endif
 
 // Mechanical endstop with COM to ground and NC to Signal uses "false" here (most common setup).
-#define X_MIN_ENDSTOP_INVERTING true // changed Set to true to invert the logic of the endstop.
-#define Y_MIN_ENDSTOP_INVERTING false // Set to true to invert the logic of the endstop.
-#define Z_MIN_ENDSTOP_INVERTING true // changed Set to true to invert the logic of the endstop.
-#define X_MAX_ENDSTOP_INVERTING false // Set to true to invert the logic of the endstop.
-#define Y_MAX_ENDSTOP_INVERTING true // changed Set to true to invert the logic of the endstop.
-#define Z_MAX_ENDSTOP_INVERTING true //changed Set to true to invert the logic of the endstop.
-#define Z_MIN_PROBE_ENDSTOP_INVERTING true //changed Set to true to invert the logic of the probe.
+#define X_MIN_ENDSTOP_INVERTING 1 // changed Set to true to invert the logic of the endstop.
+#define Y_MIN_ENDSTOP_INVERTING 0 // Set to true to invert the logic of the endstop.
+#define Z_MIN_ENDSTOP_INVERTING 1 // changed Set to true to invert the logic of the endstop.
+#define X_MAX_ENDSTOP_INVERTING 0 // Set to true to invert the logic of the endstop.
+#define Y_MAX_ENDSTOP_INVERTING 1 // changed Set to true to invert the logic of the endstop.
+#define Z_MAX_ENDSTOP_INVERTING 0 //changed Set to true to invert the logic of the endstop.
+#define Z_MIN_PROBE_ENDSTOP_INVERTING 1 //changed Set to true to invert the logic of the probe.
 
 /**
  * Stepper Drivers
@@ -750,7 +750,7 @@
  * Override with M201
  *                                      X, Y, Z, E0 [, E1[, E2...]]
  */
-#define DEFAULT_MAX_ACCELERATION      { 3000, 500, 200, 1000 } //changed
+#define DEFAULT_MAX_ACCELERATION      { 9000, 9000, 200, 1000 } //changed
 
 //#define LIMITED_MAX_ACCEL_EDITING     // Limit edit via M201 or LCD to DEFAULT_MAX_ACCELERATION * 2
 #if ENABLED(LIMITED_MAX_ACCEL_EDITING)
@@ -765,9 +765,9 @@
  *   M204 R    Retract Acceleration
  *   M204 T    Travel Acceleration
  */
-#define DEFAULT_ACCELERATION          700    // changed X, Y, Z and E acceleration for printing moves
+#define DEFAULT_ACCELERATION          2000    // changed X, Y, Z and E acceleration for printing moves
 #define DEFAULT_RETRACT_ACCELERATION  3000    // E acceleration for retracts
-#define DEFAULT_TRAVEL_ACCELERATION   3000    // X, Y, Z acceleration for travel (non printing) moves
+#define DEFAULT_TRAVEL_ACCELERATION   2000    // X, Y, Z acceleration for travel (non printing) moves
 
 /**
  * Default Jerk limits (mm/s)
@@ -780,7 +780,7 @@
 //#define CLASSIC_JERK
 #if ENABLED(CLASSIC_JERK)
   #define DEFAULT_XJERK 12.0 //changed
-  #define DEFAULT_YJERK 10.0 
+  #define DEFAULT_YJERK 12.0 //changed 
   #define DEFAULT_ZJERK  0.4 //changed
 
   //#define TRAVEL_EXTRA_XYJERK 0.0     // Additional jerk allowance for all travel moves
@@ -867,7 +867,7 @@
  * A Fix-Mounted Probe either doesn't deploy or needs manual deployment.
  *   (e.g., an inductive probe or a nozzle-based probe-switch.)
  */
-//#define FIX_MOUNTED_PROBE 
+#define FIX_MOUNTED_PROBE 
 
 /**
  * Use the nozzle as the probe, as with a conductive
@@ -930,7 +930,7 @@
  * CAUTION: This can damage machines with Z lead screws.
  *          Take extreme care when setting up this feature.
  */
-#define SENSORLESS_PROBING
+//#define SENSORLESS_PROBING
 
 //
 // For Z_PROBE_ALLEN_KEY see the Delta example configurations.
@@ -956,14 +956,14 @@
  *
  * Specify a Probe position as { X, Y, Z }
  */
-#define NOZZLE_TO_PROBE_OFFSET { 0, 0, -1.2 } //changed
+#define NOZZLE_TO_PROBE_OFFSET { -3, -4, -1.2 } //changed
 
 // Most probes should stay away from the edges of the bed, but
 // with NOZZLE_AS_PROBE this can be negative for a wider probing area.
 //#define MIN_PROBE_EDGE 10 //changed
 
 // X and Y axis travel speed (mm/m) between probes
-#define XY_PROBE_SPEED 12000 //changed
+#define XY_PROBE_SPEED 6000 //changed
 
 // Feedrate (mm/m) for the first approach when double-probing (MULTIPLE_PROBING == 2)
 #define Z_PROBE_SPEED_FAST 1200 //changed
@@ -1074,7 +1074,7 @@
 
 // @section homing
 
-//#define NO_MOTION_BEFORE_HOMING // Inhibit movement until all axes have been homed
+#define NO_MOTION_BEFORE_HOMING //changed, uncommented Inhibit movement until all axes have been homed
 
 //#define UNKNOWN_Z_NO_RAISE      // Don't raise Z (lower the bed) if Z is "unknown." For beds that fall when Z is powered off.
 
@@ -1203,9 +1203,9 @@
  *   With an LCD controller the process is guided step-by-step.
  */
 //#define AUTO_BED_LEVELING_3POINT 
-//#define AUTO_BED_LEVELING_LINEAR //changed
+#define AUTO_BED_LEVELING_LINEAR //changed
 //#define AUTO_BED_LEVELING_BILINEAR
-#define AUTO_BED_LEVELING_UBL
+//#define AUTO_BED_LEVELING_UBL
 //#define MESH_BED_LEVELING
 
 /**
@@ -1254,11 +1254,11 @@
   #define GRID_MAX_POINTS_X 2 //changed
   #define GRID_MAX_POINTS_Y 2 //changed
 
-   // Set the boundaries for probing (where the probe can reach).
-  #define MIN_PROBE_EDGE_LEFT 0 // <-- changed
-  #define MAX_PROBE_EDGE_RIGHT 163 // <-- changed
-  #define MIN_PROBE_EDGE_FRONT 0 // <-- changed
-  #define MIN_PROBE_EDGE_BACK 168 // <-- changed
+  // Set the boundaries for probing (where the probe can reach).
+  //#define LEFT_PROBE_BED_POSITION -3 //changed
+  //#define RIGHT_PROBE_BED_POSITION 163 //changed
+  //#define FRONT_PROBE_BED_POSITION -4 //changed
+  //#define BACK_PROBE_BED_POSITION 168 //changed
 
   // Probe along the Y axis, advancing X after each column
   #define PROBE_Y_FIRST //changed, uncommented
@@ -1371,7 +1371,7 @@
 
 // Homing speeds (mm/m)
 #define HOMING_FEEDRATE_XY 3000 //changed
-#define HOMING_FEEDRATE_Z  2000 //changed
+#define HOMING_FEEDRATE_Z  2400 //changed
 
 // Validate that endstops are triggered on homing moves
 #define VALIDATE_HOMING_ENDSTOPS
@@ -2262,4 +2262,86 @@
 // Allow servo angle to be edited and saved to EEPROM
 //#define EDITABLE_SERVO_ANGLES
 
+
+
+
+
+
 /*************************** LULZBOT OPTIONS ***************************/
+
+
+/**
+ * Extra modifications to Marlin
+ */
+#define LULZBOT_WIPE_SEQUENCE_COMMANDS "M117 Hot end heating...\nM104 S170\nG28 O1\nM117 Wiping nozzle\nT0\nG1 X115 Y174 Z10 F4000\nM109 R170\nG1 Z1\nM114\nG1 X115 Y174\nG1 X45 Y174\nG1 X115 Y174\nG1 X45 Y174\nG1 X115 Y174\nG1 X45 Y174\nG1 X115 Y174\nG1 X45 Y174\nG1 X115 Y174\nG1 X45 Y174\nG1 X115 Y174\nG1 X45 Y174\nG1 Z15\nM400\nM106 S255\nG0 X-3 Y168M109 R160\nM107" // <-- changed
+#define LULZBOT_AXIS_LEVELING_COMMANDS "M117 Leveling X Axis\nG28\nG0 X150 F9999\nG0 Z5 F6000\nG91\nM211 S0\nM400\nM906 Z600\nG0 Z-15 F500\nG0 Z5 F500\nM400\nG90\nM906 Z960\nM211 S1\nG28 Z0\nM117 Leveling done." // <-- changed
+#define LULZBOT_CALIBRATION_COMMANDS "M117 Starting Auto-Calibration\nT0\nG28\nM117 Leveling X Axis\nG28\nG0 X150 F9999\nG0 Z5 F6000\nG91\nM211 S0\nM400\nM906 Z600\nG0 Z-15 F500\nG0 Z5 F500\nM400\nG90\nM906 Z960\nM211 S1\nG28 Z0\nM117 Leveling done.\nG12\nM117 Calibrating...\nG425\nM500\nM117 Calibration data saved" // <-- changed
+#define LULZBOT_M226_PIN_PROTECTION_WORKAROUND // <-- changed
+#define LULZBOT_M226_NON_ARDUINO_PINS_WORKAROUND // <-- changed
+//#define LULZBOT_RUNOUT_HANDLING_WORKAROUND
+#define LULZBOT_ADVANCED_PAUSE_PURGE_WORKAROUND // <-- changed
+//#define LULZBOT_NO_PAUSE_FOR_REHEAT_WORKAROUND
+#define LULZBOT_AERO_UNLOAD_WORKAROUND // <-- changed
+#define LULZBOT_AERO_UNLOAD_PURGE_LENGTH 6 // <-- changed
+#define LULZBOT_AERO_UNLOAD_PURGE_FEEDRATE 1.0 // <-- changed
+#define LULZBOT_DISABLE_KILL_BUTTON // <-- changed
+//#define LULZBOT_EXTRUDER_FAN_ON_PIN_6
+//#define LULZBOT_NO_MOVE_ON_TOOLHEAD_CHANGE
+//#define LULZBOT_SWAP_EXTRUDERS
+//#define LULZBOT_G29_ENDS_ON_BACK_LEFT_CORNER
+#define LULZBOT_TOOLHEAD_M115_TYPE "SingleExtruderAeroV2" // <-- changed
+#define LULZBOT_EMI_MITIGATION // <-- changed
+
+/**
+ * Extra options for Archim
+ */
+//#define LULZBOT_USB_DEVICE_VENDOR_ID
+//#define LULZBOT_USB_DEVICE_PRODUCT_ID
+//#define LULZBOT_EEPROM_BACKUP_SIZE
+//#define LULZBOT_DISABLE_DUE_SD_MMC
+
+/**
+ * Extra options for either display
+ */
+//#define LULZBOT_LCD_KEEPS_STATUS_AFTER_PRINT
+#define LULZBOT_LCD_MACHINE_NAME "Mini 2" // <-- changed
+#define LULZBOT_LCD_TOOLHEAD_NAME "SE 0.5mm AeroV2" // <-- changed
+
+/**
+ * Extra options for RepRapDiscount Full Graphics Smart Controller
+ */
+#define LULZBOT_ENHANCED_BOOTSCREEN // <-- changed
+#define LULZBOT_HIDE_ACTIVE_NOZZLE_IN_MENU // <-- changed
+#define LULZBOT_HIDE_UNUSED_FANS_IN_MENU // <-- changed
+#define LULZBOT_HIDE_PREHEAT_IN_MENU // <-- changed
+#define LULZBOT_HIDE_INIT_EEPROM_IN_MENU // <-- changed
+#define LULZBOT_HIDE_BED_LEVELING_IN_MENU // <-- changed
+#define LULZBOT_LCD_ZOFFSET_FORMAT ftostr52 // <-- changed
+
+/**
+ * Extra options for AlephObjects Color LCD display
+ */
+//#define AO_EXP1_DEPRECATED_PINMAP
+//#define DEVELOPER_SCREENS
+
+/**
+ * Extra option for LulzBot Bio
+ */
+//#define LULZBOT_USE_BIOPRINTER_GCODE
+//#define LULZBOT_USE_BIOPRINTER_UI
+//#define LULZBOT_DISABLE_TOOLHEAD_HEATER
+#define LULZBOT_AXIS_LEVELING_COMMANDS "M117 Leveling X Axis\nG28\nG0 X150 F9999\nG0 Z5 F6000\nG91\nM211 S0\nM400\nM906 Z600\nG0 Z-15 F500\nG0 Z5 F500\nM400\nG90\nM906 Z960\nM211 S1\nG28 Z0\nM117 Leveling done." // <-- changed
+//#define LULZBOT_PARK_AND_RELEASE_COMMANDS
+//#define LULZBOT_E_TRAVEL_LIMIT
+//#define E_MIN_PIN
+//#define E_MIN_PIN_INVERTING
+
+/**
+ * Override certain other Marlin options
+ */
+//#define MAX_PROBE_Y 168 // <-- changed
+//#define MAX_PROBE_X 163 // <-- changed
+//#define MIN_PROBE_Y -4 // <-- changed
+//#define MIN_PROBE_X -3 // <-- changed
+//#define ACTION_ON_FILAMENT_RUNOUT
+//#define FAN_PIN
