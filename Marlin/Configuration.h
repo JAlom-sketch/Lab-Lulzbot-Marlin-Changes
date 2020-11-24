@@ -820,7 +820,7 @@
  *
  * Enable this option for a probe connected to the Z Min endstop pin.
  */
-#define Z_MIN_PROBE_USES_LULZBOT_Z_MIN_PROBE_USES_Z_MIN_ENDSTOP_PIN
+#define Z_MIN_PROBE_USES_Z_MIN_ENDSTOP_PIN LULZBOT_Z_MIN_PROBE_USES_Z_MIN_ENDSTOP_PIN
 
 /**
  * Z_MIN_PROBE_PIN
@@ -861,7 +861,7 @@
  * A Fix-Mounted Probe either doesn't deploy or needs manual deployment.
  *   (e.g., an inductive probe or a nozzle-based probe-switch.)
  */
-//#define FIX_MOUNTED_PROBE LULZBOT_FIX_MOUNTED_PROBE
+#define FIX_MOUNTED_PROBE LULZBOT_FIX_MOUNTED_PROBE
 
 /**
  * Z Servo Probe, such as an endstop switch on a rotating arm.
@@ -872,7 +872,7 @@
 /**
  * The BLTouch probe uses a Hall effect sensor and emulates a servo.
  */
-#define BLTOUCH
+//#define BLTOUCH
 
 /**
  * Touch-MI Probe by hotends.fr
@@ -932,11 +932,8 @@
 #define Y_PROBE_OFFSET_FROM_EXTRUDER LULZBOT_Y_PROBE_OFFSET_FROM_EXTRUDER // Y offset: -front +behind [the nozzle]
 #define Z_PROBE_OFFSET_FROM_EXTRUDER LULZBOT_Z_PROBE_OFFSET_FROM_EXTRUDER // Z offset: -below +above  [the nozzle]
 
-
 // Certain types of probes need to stay away from edges
-#define MIN_PROBE_EDGE LULZBOT_MIN_PROBE_EDGE_DISABLED
-
-
+//#define MIN_PROBE_EDGE LULZBOT_MIN_PROBE_EDGE_DISABLED
 
 // X and Y axis travel speed (mm/m) between probes
 #define XY_PROBE_SPEED LULZBOT_XY_PROBE_SPEED
@@ -1188,7 +1185,7 @@
  * Normally G28 leaves leveling disabled on completion. Enable
  * this option to have G28 restore the prior leveling state.
  */
- #define RESTORE_LEVELING_AFTER_G28 LULZBOT_RESTORE_LEVELING_AFTER_G28
+#define RESTORE_LEVELING_AFTER_G28 LULZBOT_RESTORE_LEVELING_AFTER_G28
 
 /**
  * Enable detailed logging of G28, G29, M48, etc.
@@ -2206,7 +2203,7 @@
  * Set this manually if there are extra servos needing manual control.
  * Leave undefined or set to 0 to entirely disable the servo subsystem.
  */
-//#define NUM_SERVOS LULZBOT_NUM_SERVOS // Servo index starts with 0 for M280 command
+#define NUM_SERVOS LULZBOT_NUM_SERVOS // Servo index starts with 0 for M280 command
 
 // Delay (in milliseconds) before the next move will start, to give the servo time to reach its target angle.
 // 300ms is a good value but you can try less delay.

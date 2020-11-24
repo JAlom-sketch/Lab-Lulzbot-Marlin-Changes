@@ -73,7 +73,7 @@
  *
  */
 
-#define LULZBOT_FW_VERSION ".144" // Change this with each update
+#define LULZBOT_FW_VERSION ".144.1" // Change this with each update
 
 #if ( \
     !defined(LULZBOT_Gladiola_Mini) && \
@@ -1216,9 +1216,9 @@
    #if defined(LULZBOT_Quiver_TAZPro)
     #define LULZBOT_EXTRUDERS                  1
     #define LULZBOT_TOOLHEAD_X_MAX_ADJ         0    
-    #define LULZBOT_TOOLHEAD_X_MIN_ADJ         -9
-    #define LULZBOT_TOOLHEAD_Y_MAX_ADJ         -10 //-8
-    #define LULZBOT_TOOLHEAD_Y_MIN_ADJ         0 //0
+    #define LULZBOT_TOOLHEAD_X_MIN_ADJ         -4//-9
+    #define LULZBOT_TOOLHEAD_Y_MAX_ADJ         -10 
+    #define LULZBOT_TOOLHEAD_Y_MIN_ADJ         0 
     #define LULZBOT_TOOLHEAD_Z_MAX_ADJ         0 
     #define LULZBOT_TOOLHEAD_Z_MIN_ADJ         0  
     #define LULZBOT_MOTOR_CURRENT_E          960 // mA
@@ -2069,7 +2069,7 @@
     #else
         #define LULZBOT_LEFT_WIPE_Y2                   25
     #endif
-    #define LULZBOT_LEFT_WIPE_Z                        1
+    #define LULZBOT_LEFT_WIPE_Z                        0
 
     #if defined(LULZBOT_Quiver_TAZPro)
         // The Quiver has an wipe pad on the right side of the bed.
@@ -2077,7 +2077,7 @@
         #define LULZBOT_RIGHT_WIPE_X2                   297
         #define LULZBOT_RIGHT_WIPE_Y1                    95
         #define LULZBOT_RIGHT_WIPE_Y2                    25
-        #define LULZBOT_RIGHT_WIPE_Z                      1
+        #define LULZBOT_RIGHT_WIPE_Z                      0
     #endif
 #endif
 
