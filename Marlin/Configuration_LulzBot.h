@@ -50,7 +50,7 @@
 // If compiling using the Arduino IDE, remove the "//" from the following lines and
 // set printer model and toolhead after the "LULZBOT_" and "TOOLHEAD_" respectively:
 
-#define LULZBOT_Oliveoil_TAZ6  
+#define LULZBOT_Hibiscus_Mini2 
 //#define TOOLHEAD_CecropiaSilk_AerostruderV2
 #define TOOLHEAD_Lutefisk_M175 
 
