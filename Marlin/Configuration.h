@@ -10,11 +10,12 @@
 //#define TazDualZ
 
 /************** Uncomment a Tool Head Option From Below *********************/
-#define LULZBOT_UNIVERSAL_TOOLHEAD
+//#define LULZBOT_UNIVERSAL_TOOLHEAD
 //#define TOOLHEAD_SL_SE_HE
 //#define TOOLHEAD_HS_HSPLUS
 //#define TOOLHEAD_H175
 //#define TOOLHEAD_M175
+#define TOOLHEAD_M175V3
 //#define TOOLHEAD_SK175
 //#define TOOLHEAD_SK285
 //#define TOOLHEAD_Quiver_DualExtruder            // TAZ Pro Dual Extruder
@@ -445,6 +446,21 @@
     #define LULZBOT_X_MAX_ENDSTOP_INVERTING        LULZBOT_NORMALLY_CLOSED_ENDSTOP
     #define LULZBOT_E_STEPS                        9448.8
 #endif /* TOOLHEAD_KangarooPaw_SingleExtruder */
+
+#if defined(TOOLHEAD_M175V3)
+    #define LULZBOT_LCD_TOOLHEAD_NAME              "Undecided"
+//          16 chars max                            ^^^^^^^^^^^^^^^
+  #define LULZBOT_UNIVERSAL_MOUNT
+  #define LULZBOT_EXTRUDERS                  1
+  #define LULZBOT_MOTOR_CURRENT_E          960 // mA
+  #define LULZBOT_M115_EXTRUDER_TYPE       "Universal"
+  #define LULZBOT_TOOLHEAD_X_MAX_ADJ             0
+  #define LULZBOT_TOOLHEAD_X_MIN_ADJ             0
+  #define LULZBOT_TOOLHEAD_Y_MAX_ADJ             0
+  #define LULZBOT_TOOLHEAD_Y_MIN_ADJ             0
+  #define LULZBOT_TOOLHEAD_Z_MAX_ADJ             0
+  #define LULZBOT_TOOLHEAD_Z_MIN_ADJ             0                      9448.8
+#endif /* TOOLHEAD_M175V3 */
 // This defines the number of extruders
 // :[0, 1, 2, 3, 4, 5, 6, 7, 8]
 #define EXTRUDERS LULZBOT_EXTRUDERS
