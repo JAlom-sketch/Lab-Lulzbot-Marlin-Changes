@@ -448,18 +448,20 @@
 #endif /* TOOLHEAD_KangarooPaw_SingleExtruder */
 
 #if defined(TOOLHEAD_M175V3)
-    #define LULZBOT_LCD_TOOLHEAD_NAME              "Undecided"
-//          16 chars max                            ^^^^^^^^^^^^^^^
+    #define LULZBOT_LCD_TOOLHEAD_NAME            "Undecided"
+//          16 chars max                          ^^^^^^^^^^^^^^^
+  #define LULZBOT_M115_EXTRUDER_TYPE             "Universal"
   #define LULZBOT_UNIVERSAL_MOUNT
-  #define LULZBOT_EXTRUDERS                  1
-  #define LULZBOT_MOTOR_CURRENT_E          960 // mA
-  #define LULZBOT_M115_EXTRUDER_TYPE       "Universal"
+  #define LULZBOT_EXTRUDERS                      1
+  #define LULZBOT_MOTOR_CURRENT_E                500 // mA needs to be found
+  #define LULZBOT_E_STEPS                        400
   #define LULZBOT_TOOLHEAD_X_MAX_ADJ             0
   #define LULZBOT_TOOLHEAD_X_MIN_ADJ             0
   #define LULZBOT_TOOLHEAD_Y_MAX_ADJ             0
   #define LULZBOT_TOOLHEAD_Y_MIN_ADJ             0
   #define LULZBOT_TOOLHEAD_Z_MAX_ADJ             0
-  #define LULZBOT_TOOLHEAD_Z_MIN_ADJ             0                      9448.8
+  #define LULZBOT_TOOLHEAD_Z_MIN_ADJ             0
+
 #endif /* TOOLHEAD_M175V3 */
 // This defines the number of extruders
 // :[0, 1, 2, 3, 4, 5, 6, 7, 8]
