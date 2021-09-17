@@ -25,7 +25,7 @@ build_all:
     - mv .pio/build/$PIO_ENV/firmware.bin . || true
   parallel:
     matrix:
-      - PIO_ENV: [MiniV2, TAZ6, Workhorse, TAZPro, TAZProXT, Sidekick_289, Sidekick_747]
+      - PIO_ENV: [MiniV2_UNV, TAZ6_UNV, Workhorse_UNV, TAZPro_UNV, TAZPro_DUAL, TAZProXT_UNV, TAZProXT_DUAL, Sidekick_289_UNV, Sidekick_289_SLSEHE, Sidekick_289_HSHSPLUS, Sidekick_289_H175, Sidekick_289_M175, Sidekick_289_SK175, Sidekick_289_SK285, Sidekick_747_UNV, Sidekick_747_SLSEHE, Sidekick_747_HSHSPLUS, Sidekick_747_H175, Sidekick_747_M175, Sidekick_747_SK175, Sidekick_747_SK285]
   artifacts:
     expose_as: firmware
     name: $PIO_ENV-$CI_PIPELINE_IID-$CI_COMMIT_SHA
