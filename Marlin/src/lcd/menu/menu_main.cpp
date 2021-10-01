@@ -64,7 +64,7 @@ void menu_motion();
 void menu_temperature();
 void menu_configuration();
 
-#if ENABLED(CUSTOM_USER_MENUS)
+#if ENABLED(CUSTOM_MENU_MAIN)
   void menu_user();
 #endif
 
@@ -191,7 +191,7 @@ void menu_main() {
 
   SUBMENU(MSG_CONFIGURATION, menu_configuration);
 
-  #if ENABLED(CUSTOM_USER_MENUS)
+  #if ENABLED(CUSTOM_MENU_MAIN)
     #ifdef CUSTOM_USER_MENU_TITLE
       SUBMENU_P(PSTR(CUSTOM_USER_MENU_TITLE), menu_user);
     #else

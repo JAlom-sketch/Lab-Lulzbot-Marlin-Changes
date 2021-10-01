@@ -26,7 +26,7 @@
 
 #include "../../inc/MarlinConfigPre.h"
 
-#if BOTH(HAS_LCD_MENU, CUSTOM_USER_MENUS)
+#if BOTH(HAS_LCD_MENU, CUSTOM_MENU_MAIN)
 
 #include "menu_item.h"
 #include "../../gcode/queue.h"
@@ -126,4 +126,4 @@ void menu_user() {
   END_MENU();
 }
 
-#endif // HAS_LCD_MENU && CUSTOM_USER_MENUS
+#endif // HAS_LCD_MENU && CUSTOM_MENU_MAIN
