@@ -614,7 +614,7 @@ void resume_print(const_float_t slow_load_length/*=0*/, const_float_t fast_load_
 
   // Retract to prevent oozing
   unscaled_e_move(-(PAUSE_PARK_RETRACT_LENGTH), feedRate_t(PAUSE_PARK_RETRACT_FEEDRATE));
-
+SERIAL_ECHO_MSG(STR_ERR_HOTEND_TOO_COLD);
   if (!axes_should_home()) {
     // Move XY back to saved position
     destination.set(resume_position.x, resume_position.y, current_position.z, current_position.e);
@@ -672,7 +672,7 @@ void resume_print(const_float_t slow_load_length/*=0*/, const_float_t fast_load_
   #if ENABLED(ADVANCED_PAUSE_FANS_PAUSE) && HAS_FAN
     thermalManager.set_fans_paused(false);
   #endif
-
+SERIAL_ECHO_MSG(STR_ERR_HOTEND_TOO_COLD);
   TERN_(HAS_FILAMENT_SENSOR, runout.reset());
 
   TERN_(HAS_STATUS_MESSAGE, ui.reset_status());
