@@ -678,7 +678,6 @@ void resume_print(const_float_t slow_load_length/*=0*/, const_float_t fast_load_
   TERN_(HAS_STATUS_MESSAGE, ui.reset_status());
 
   TERN_(HAS_LCD_MENU, ui.return_to_status());
-  queue.inject_P(PSTR("M117 return to status\nM226 P24 S0"));
 }
 
 #endif // ADVANCED_PAUSE_FEATURE

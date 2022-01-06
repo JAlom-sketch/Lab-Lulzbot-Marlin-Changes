@@ -25,6 +25,7 @@
 #if ENABLED(ADVANCED_PAUSE_FEATURE)
 
 #include "../../gcode.h"
+#include "../../queue.h"
 #include "../../../feature/pause.h"
 #include "../../../module/motion.h"
 #include "../../../module/printcounter.h"
@@ -163,6 +164,7 @@ void GcodeSuite::M600() {
   #endif
 
   TERN_(MIXING_EXTRUDER, mixer.T(old_mixing_tool)); // Restore original mixing tool
+  queue.inject_P(PSTR("M117 end of M600\nM226 P24 S0"));
 }
 
 #endif // ADVANCED_PAUSE_FEATURE
