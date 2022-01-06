@@ -614,7 +614,7 @@ void resume_print(const_float_t slow_load_length/*=0*/, const_float_t fast_load_
 
   // Retract to prevent oozing
   unscaled_e_move(-(PAUSE_PARK_RETRACT_LENGTH), feedRate_t(PAUSE_PARK_RETRACT_FEEDRATE));
-SERIAL_ECHO_MSG(STR_ERR_HOTEND_TOO_COLD);
+  
   if (!axes_should_home()) {
     // Move XY back to saved position
     destination.set(resume_position.x, resume_position.y, current_position.z, current_position.e);
@@ -659,7 +659,7 @@ SERIAL_ECHO_MSG(STR_ERR_HOTEND_TOO_COLD);
 
   // Resume the print job timer if it was running
   if (print_job_timer.isPaused()) print_job_timer.start();
-
+queue.inject_P("M117 before sdsupport\nM226 P24 S1");
   #if ENABLED(SDSUPPORT)
     if (did_pause_print) {
       --did_pause_print;
@@ -668,14 +668,15 @@ SERIAL_ECHO_MSG(STR_ERR_HOTEND_TOO_COLD);
       TERN_(POWER_LOSS_RECOVERY, if (recovery.enabled) recovery.save(true));
     }
   #endif
-
+queue.inject_P("M117 advancepause fan\nM226 P24 S1");
   #if ENABLED(ADVANCED_PAUSE_FANS_PAUSE) && HAS_FAN
     thermalManager.set_fans_paused(false);
   #endif
-SERIAL_ECHO_MSG(STR_ERR_HOTEND_TOO_COLD);
+queue.inject_P("M117 filament sensor\nM226 P24 S1");
   TERN_(HAS_FILAMENT_SENSOR, runout.reset());
-
+queue.inject_P("M117 status\nM226 P24 S1");
   TERN_(HAS_STATUS_MESSAGE, ui.reset_status());
+  queue.inject_P("M117 return to status\nM226 P24 S1");
   TERN_(HAS_LCD_MENU, ui.return_to_status());
 }
 
