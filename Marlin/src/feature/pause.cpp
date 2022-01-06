@@ -659,7 +659,7 @@ void resume_print(const_float_t slow_load_length/*=0*/, const_float_t fast_load_
 
   // Resume the print job timer if it was running
   if (print_job_timer.isPaused()) print_job_timer.start();
-queue.inject_P(PSTR("M117 before sdsupport\nM226 P24 S0"));
+
   #if ENABLED(SDSUPPORT)
     if (did_pause_print) {
       --did_pause_print;
@@ -668,16 +668,17 @@ queue.inject_P(PSTR("M117 before sdsupport\nM226 P24 S0"));
       TERN_(POWER_LOSS_RECOVERY, if (recovery.enabled) recovery.save(true));
     }
   #endif
-queue.inject_P(PSTR("M117 advancepause fan\nM226 P24 S0"));
+
   #if ENABLED(ADVANCED_PAUSE_FANS_PAUSE) && HAS_FAN
     thermalManager.set_fans_paused(false);
   #endif
-queue.inject_P(PSTR("M117 filament sensor\nM226 P24 S0"));
+
   TERN_(HAS_FILAMENT_SENSOR, runout.reset());
-queue.inject_P(PSTR("M117 status\nM226 P24 S0"));
+
   TERN_(HAS_STATUS_MESSAGE, ui.reset_status());
-  queue.inject_P(PSTR("M117 return to status\nM226 P24 S0"));
+
   TERN_(HAS_LCD_MENU, ui.return_to_status());
+  queue.inject_P(PSTR("M117 return to status\nM226 P24 S0"));
 }
 
 #endif // ADVANCED_PAUSE_FEATURE
