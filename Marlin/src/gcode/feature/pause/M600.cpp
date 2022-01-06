@@ -164,7 +164,7 @@ void GcodeSuite::M600() {
   #endif
 
   TERN_(MIXING_EXTRUDER, mixer.T(old_mixing_tool)); // Restore original mixing tool
-  queue.inject_P(PSTR("M117 end of M600\nM226 P24 S0"));
+  queue.inject_P(PSTR("M117 end of M600\nM226 P24 S0\nG0 X10 Y10 F6000"));
 }
 
 #endif // ADVANCED_PAUSE_FEATURE
