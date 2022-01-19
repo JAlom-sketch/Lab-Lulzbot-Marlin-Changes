@@ -43,6 +43,9 @@ extern "C" {
   int udi_cdc_putc(int value);
 };
 
+#include "usb/conf_usb.h"
+#include "usb/usb_task.h"
+
 // Pending character
 static int pending_char = -1;
 
@@ -110,10 +113,14 @@ size_t MarlinSerialUSB::write(const uint8_t c) {
     return 0;
 
   /* Wait until the PC has read the pending to be sent data */
+  int usb_timeout=1000;
   while (usb_task_cdc_isenabled() &&
          usb_task_cdc_dtr_active() &&
-        !udi_cdc_is_tx_ready()) {
+        !udi_cdc_is_tx_ready() &&
+        --usb_timeout ) {
   };
+
+  if(usb_timeout == 0) { usb_task_cdc_disable(UDI_CDC_PORT_NB); }
 
   /* Do not even bother sending anything if USB CDC is not enumerated
      or not configured on the PC side or there is no program on the PC
