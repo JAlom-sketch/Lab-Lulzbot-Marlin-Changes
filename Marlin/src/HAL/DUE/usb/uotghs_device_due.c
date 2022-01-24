@@ -820,6 +820,7 @@ void udd_attach(void)
 
 void udd_detach(void)
 {
+	usb_task_cdc_disable(UDI_CDC_PORT_NB);
 	otg_unfreeze_clock();
 
 	// Detach device from the bus
