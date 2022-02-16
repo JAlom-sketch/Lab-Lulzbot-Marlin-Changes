@@ -51,7 +51,7 @@
 #include "udc_desc.h"
 #include "udi_cdc.h"
 
-#if DISABLED(MSCSUPPORT)
+#if DISABLED(SDSUPPORT)
 
 /**
  * \defgroup udi_cdc_group_single_desc USB device descriptors for a single interface
@@ -256,6 +256,6 @@ UDC_DESC_STORAGE udc_config_t udc_config = {
 //@}
 //@}
 
-#endif // MSCSUPPORT
+#endif // SDSUPPORT
 
 #endif // ARDUINO_ARCH_SAM
