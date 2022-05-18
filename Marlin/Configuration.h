@@ -2567,7 +2567,7 @@
 #endif
 
 #if ENABLED(NOZZLE_CLEAN_FEATURE)
-  #define CLEAN_SCRIPT "M117 Cleaning nozzle...\nG28 O\nM117 Nozzle Heating for Wipe...\nM109 S170\nG12\nM106 S255\nM109 S170\nM77\nM117 Nozzle clean"
+  #define CLEAN_SCRIPT "M117 Cleaning nozzle...\nG28O\nM109 S170\nG12\nM106 S255\nM109 S170\nM77\nM117 Nozzle Clean"
 
   // Default number of pattern repetitions
   #define NOZZLE_CLEAN_STROKES  12
