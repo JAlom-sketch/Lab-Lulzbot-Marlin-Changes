@@ -96,7 +96,12 @@
 
 #endif
 
-#define Z_MIN_PIN                             31  // PA7 MIN ES3
+#if defined (LULZBOT_BLTouch)
+  #define Z_MIN_PIN        63   // PB18/RD/PWML2/AD11 THERM AN2
+#else
+  #define Z_MIN_PIN        31   // PA7 MIN ES3
+#endif
+
 #define Z_MAX_PIN                             30  // PD9 MAX ES3
 
 //
