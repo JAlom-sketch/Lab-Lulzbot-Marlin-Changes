@@ -1634,8 +1634,13 @@
     #define PROBING_MARGIN -8
   #elif ENABLED(Workhorse)
     #define PROBING_MARGIN -10
-  #elif ANY(TAZPro, TAZProXT)
+  #elif ANY(TAZPro, TAZProXT) 
     #define PROBING_MARGIN -9
+  #endif
+
+  #if defined(LULZBOTLONG_BED)
+  #undef PROBING_MARGIN
+  #define PROBING_MARGIN 15
   #endif
 #endif
 
