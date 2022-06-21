@@ -1126,7 +1126,7 @@
       #define CALIBRATION_OBJECT_DIMENSIONS {10.0, 10.0, 10.0} //  mm
       #define CALIBRATION_MEASURE_FRONT
     #else
-      #define CALIBRATION_OBJECT_CENTER     {267.5,-9.5,-2.0} //  mm
+      #define CALIBRATION_OBJECT_CENTER     { 261.0, -19.0,  -2.0} // mm
       #define CALIBRATION_OBJECT_DIMENSIONS {10.0,  1.0, 10.0} //  mm
     #endif
     // Comment out any sides which are unreachable by the probe. For best
@@ -2029,7 +2029,7 @@
  * Repeatedly attempt G29 leveling until it succeeds.
  * Stop after G29_MAX_RETRIES attempts.
  */
-#if DISABLED(Sidekick_289, Sidekick_747)
+#if DISABLED(LULZBOT_BLTouch)
   #define G29_RETRY_AND_RECOVER
 #endif
 #if ENABLED(G29_RETRY_AND_RECOVER)
