@@ -1,7 +1,7 @@
 //#define LULZBOT_Hibiscus_Mini2
 //#define LULZBOT_Oliveoil_TAZ6
 //#define LULZBOT_Redgum_TAZWorkhorse
-//#define LULZBOT_Quiver_TAZPro
+#define LULZBOT_Quiver_TAZPro
 //#define LULZBOT_Gladiator_TAZProXT
 //#define LULZBOT_Sidekick_289
 //#define LULZBOT_Sidekick_747
