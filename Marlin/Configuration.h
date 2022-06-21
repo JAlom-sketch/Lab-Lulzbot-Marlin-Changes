@@ -1504,7 +1504,7 @@
  * Use the nozzle as the probe, as with a conductive
  * nozzle system or a piezo-electric smart effector.
  */
-#if DISABLED(Sidekick_289, Sidekick_747, LULZBOT_LONG_BED)
+#if DISABLED(LULZBOT_BLTouch)
   #define NOZZLE_AS_PROBE
 #endif
 
@@ -1517,7 +1517,7 @@
 /**
  * The BLTouch probe uses a Hall effect sensor and emulates a servo.
  */
-#if ANY(Sidekick_289, Sidekick_747, LULZBOT_LONG_BED)
+#if defined (LULZBOT_BLTouch)
   #define BLTOUCH
 #endif
 
@@ -2231,12 +2231,17 @@
   // Set the number of grid points per dimension.
   #if defined (Sidekick_747)
     #define GRID_MAX_POINTS_X 4  //4x4 grid to avoid hitting the handle on the flex bed
+    #define GRID_MAX_POINTS_Y GRID_MAX_POINTS_X
   #elif defined(Sidekick_289)
     #define GRID_MAX_POINTS_X 3  //3x3 grid to increase startup speed
+    #define GRID_MAX_POINTS_Y GRID_MAX_POINTS_X
+  #elif defined(LULZBOT_LONG_BED)
+    #define GRID_MAX_POINTS_X 4  //2x2 grid of mounted washers
+    #define GRID_MAX_POINTS_Y 8
   #else
     #define GRID_MAX_POINTS_X 2  //2x2 grid of mounted washers
+    #define GRID_MAX_POINTS_Y GRID_MAX_POINTS_X
   #endif
-  #define GRID_MAX_POINTS_Y GRID_MAX_POINTS_X
 
   // Probe along the Y axis, advancing X after each column
   #if ANY(MiniV2, TAZ6)
@@ -2643,7 +2648,7 @@
   #elif ENABLED(Workhorse)
     #define WIPE_SEQUENCE_COMMANDS "G28O\nM117 Wiping nozzle\nT0\nG1 X-17 Y25 Z10 F4000\nG1 Z1\nM114\nG1 X-17 Y25\nG1 X-17 Y95\nG1 X-17 Y25\nG1 X-17 Y95\nG1 X-17 Y25\nG1 X-17 Y95\nG1 X-17 Y25\nG1 X-17 Y95\nG1 X-17 Y25\nG1 X-17 Y95\nG1 X-17 Y25\nG1 X-17 Y95\nG1 Z15\nM400\nM117 Wipe Complete"
   #elif ANY(TAZPro, TAZProXT) && ENABLED(LULZBOT_UNIVERSAL_TOOLHEAD)
-    #define WIPE_SEQUENCE_COMMANDS "G28O\nM117 Wiping nozzle\nT0\nG1 X300 Y25 Z10 F4000\nG1 Z-1 F4000\nM114\nG1 Y25 F4000\nG1 Y95 F4000\nG1 Y25 F4000\nG1 Y95 F4000\nG1 Y25 F4000\nG1 Y95 F4000\nG1 Y25 F4000\nG1 Y95 F4000\nG1 Y25 F4000\nG1 Y95 F4000\nG1 Y25 F4000\nG1 Y95 F4000\nG1 Z15 F4000\nM400\nG0 Y-9.0 F4000\nM117 Wipe Complete"
+    #define WIPE_SEQUENCE_COMMANDS "G28O\nM117 Wiping nozzle\nT0\nG1 X294 Y25 Z10 F4000\nG1 Z-1 F4000\nM114\nG1 Y25 F4000\nG1 Y95 F4000\nG1 Y25 F4000\nG1 Y95 F4000\nG1 Y25 F4000\nG1 Y95 F4000\nG1 Y25 F4000\nG1 Y95 F4000\nG1 Y25 F4000\nG1 Y95 F4000\nG1 Y25 F4000\nG1 Y95 F4000\nG1 Z15 F4000\nM400\nG0 Y-9.0 F4000\nM117 Wipe Complete"
   #elif ANY(TAZPro, TAZProXT) && ENABLED(TOOLHEAD_Quiver_DualExtruder) 
     #define WIPE_SEQUENCE_COMMANDS "G1 X-17 Y25 Z10 F4000\nT0\nG1 Z-1\nM114\nG1 X-17 Y25\nG1 X-17 Y95\nG1 X-17 Y25\nG1 X-17 Y95\nG1 X-17 Y25\nG1 X-17 Y95\nG1 X-17 Y25\nG1 X-17 Y95\nG1 X-17 Y25\nG1 X-17 Y95\nG1 X-17 Y25\nG1 X-17 Y95\nG1 Z15\nM400"
   #endif
