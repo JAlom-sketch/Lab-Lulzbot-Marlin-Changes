@@ -9,6 +9,7 @@
 
 //#define TazDualZ
 #define LULZBOT_FILAMENT_RUNOUT
+#define LULZBOT_LONG_BED
 /************** Uncomment a Tool Head Option From Below *********************/
 #define LULZBOT_UNIVERSAL_TOOLHEAD
 //#define TOOLHEAD_SL_SE_HE
@@ -210,6 +211,9 @@
   //#define LULZBOT_MANUAL_USB_STARTUP
 #endif
 
+#if defined(LULZBOT_LONG_BED)
+  #define LULZBOT_BLTouch
+#endif
 /**
  * Select the serial port on the board to use for communication with the host.
  * This allows the connection of wireless adapters (for instance) to non-default port pins.
@@ -1144,7 +1148,7 @@
 #if DISABLED(Workhorse, Sidekick_289, Sidekick_747)
   #define USE_YMAX_PLUG
 #endif
-#if DISABLED(LULZBOT_BLTouch)
+#if DISABLED(LULZBOT_BLTouch) || ENABLED(LULZBOT_LONG_BED)
   #define USE_ZMAX_PLUG
 #endif
 //#define USE_IMIN_PLUG
@@ -1325,8 +1329,10 @@
   #define DEFAULT_AXIS_STEPS_PER_UNIT   { 100, 100, 200, 420 }
 #elif ENABLED(TAZ6)
   #define DEFAULT_AXIS_STEPS_PER_UNIT   { 100, 100, 1600, 833 }
-#elif ANY(Workhorse, TAZPro, TAZProXT)
+#elif ANY(Workhorse, TAZPro, TAZProXT) && DISABLED(LULZBOT_LONG_BED)
     #define DEFAULT_AXIS_STEPS_PER_UNIT   { 100, 100, 500, 420 }
+#elif ANY(Workhorse, TAZPro, TAZProXT) && ENABLED(LULZBOT_LONG_BED)
+    #define DEFAULT_AXIS_STEPS_PER_UNIT   { 100, 160, 500, 420 }
 #endif
 
 /**
@@ -1498,7 +1504,7 @@
  * Use the nozzle as the probe, as with a conductive
  * nozzle system or a piezo-electric smart effector.
  */
-#if DISABLED(Sidekick_289, Sidekick_747)
+#if DISABLED(Sidekick_289, Sidekick_747, LULZBOT_LONG_BED)
   #define NOZZLE_AS_PROBE
 #endif
 
@@ -1511,7 +1517,7 @@
 /**
  * The BLTouch probe uses a Hall effect sensor and emulates a servo.
  */
-#if ANY(Sidekick_289, Sidekick_747)
+#if ANY(Sidekick_289, Sidekick_747, LULZBOT_LONG_BED)
   #define BLTOUCH
 #endif
 
@@ -1609,8 +1615,10 @@
   #define NOZZLE_TO_PROBE_OFFSET { 0, 0, -1.1 }
 #elif ANY(TAZ6, Workhorse)
   #define NOZZLE_TO_PROBE_OFFSET { 0, 0, -1.2 }
-#elif ANY(TAZPro, TAZProXT)
+#elif ANY(TAZPro, TAZProXT) && DISABLED(LULZBOT_LONG_BED) 
   #define NOZZLE_TO_PROBE_OFFSET { 0, 0, -1.102 }
+#elif ANY(TAZPro, TAZProXT) && ENABLED(LULZBOT_LONG_BED) 
+  #define NOZZLE_TO_PROBE_OFFSET { -38, -20, -2.5 }
 #elif ANY(Sidekick_289, Sidekick_747)
   #define NOZZLE_TO_PROBE_OFFSET { -1, 50, -2.1 }
 #endif
@@ -1894,7 +1902,17 @@
   #define LULZBOT_Z_MAX_POS 297
 
 #elif ENABLED(TAZPro) 
-   #if defined(TOOLHEAD_Quiver_DualExtruder)
+  #if defined(LULZBOT_LONG_BED)
+    #define LULZBOT_X_MAX_POS 318
+    #define LULZBOT_X_MIN_POS -6
+    #define LULZBOT_Y_MAX_POS 613
+    #define LULZBOT_Y_MIN_POS -18.2//-15
+    #define LULZBOT_Z_MIN_POS -9 // <-- changed
+    #define LULZBOT_Z_MAX_POS 290 // <-- changed 
+
+    #define X_BED_SIZE        280
+    #define Y_BED_SIZE        570
+  #elif defined(TOOLHEAD_Quiver_DualExtruder)
     #define X_BED_SIZE 281
     #define Y_BED_SIZE 283
     // Travel limits (mm) after homing, corresponding to endstop positions.
@@ -1915,6 +1933,7 @@
     #define LULZBOT_Z_MIN_POS -9
     #define LULZBOT_Z_MAX_POS 299 
   #endif
+  
 #elif ENABLED(TAZProXT)
     #if defined(TOOLHEAD_Quiver_DualExtruder)
     #define X_BED_SIZE 281
