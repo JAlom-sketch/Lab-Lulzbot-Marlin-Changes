@@ -2902,7 +2902,9 @@
    * When disabled, Marlin will use spreadCycle stepping mode.
    */
   //#define STEALTHCHOP_XY
-  #define STEALTHCHOP_Z
+  #if DISABLED(TAZPro,TAZProXT)
+    #define STEALTHCHOP_Z
+  #endif
   //#define STEALTHCHOP_I
   //#define STEALTHCHOP_J
   //#define STEALTHCHOP_K
