@@ -9,6 +9,8 @@
 
 //#define TazDualZ
 #define LULZBOT_FILAMENT_RUNOUT
+//#define LULZBOT_BLTouch
+//#define LULZBOT_LongBed
 /************** Uncomment a Tool Head Option From Below *********************/
 #define LULZBOT_UNIVERSAL_TOOLHEAD
 //#define TOOLHEAD_SL_SE_HE
@@ -200,15 +202,21 @@
 #elif ENABLED(TAZPro)
   #define CUSTOM_MACHINE_NAME "LulzBot TAZ Pro"
   #define MACHINE_UUID "a952577d-8722-483a-999d-acdc9e772b7b" // <-- changed
+  #define LULZBOT_FILAMENT_RUNOUT                             // <-- changed
 #elif ENABLED(TAZProXT)
   #define CUSTOM_MACHINE_NAME "LulzBot TAZ ProXT"
   #define MACHINE_UUID "28ac1ce7-ca05-4f8e-8f1f-1d2f4496a1eb" // <-- changed
+  #define LULZBOT_FILAMENT_RUNOUT                             // <-- changed
 #elif ENABLED(Sidekick_289)
   #define CUSTOM_MACHINE_NAME "Taz SideKick 289"
   #define MACHINE_UUID "2c6bb70e-20ef-4fb1-962d-c71d40e176b6" // <-- changed
+  #define LULZBOT_BLTouch                                     // <-- changed
+  #define LULZBOT_FILAMENT_RUNOUT                             // <-- changed
 #elif ENABLED(Sidekick_747)
   #define CUSTOM_MACHINE_NAME "Taz SideKick 747"
   #define MACHINE_UUID "5b3d61d6-80f8-41ed-bd8a-9c765f8d523d" // <-- changed
+  #define LULZBOT_BLTouch                                     // <-- changed
+  #define LULZBOT_FILAMENT_RUNOUT                             // <-- changed
 #endif
 
 // Printer's unique ID, used by some programs to differentiate between machines.
@@ -1379,14 +1387,12 @@
  *                                      X, Y, Z [, I [, J [, K...]]], E0 [, E1[, E2...]]
  */
 
-#if ENABLED(Mini)
-  #define DEFAULT_AXIS_STEPS_PER_UNIT   { 100, 100, 1600, 833 }
-#elif ENABLED(MiniV2)
+#if ANY(MiniV2, Sidekick_289, Sidekick_747)
   #define DEFAULT_AXIS_STEPS_PER_UNIT   { 100, 100, 200, 420 }
 #elif ENABLED(TAZ6)
-  #define DEFAULT_AXIS_STEPS_PER_UNIT   { 100, 100, 1600, 830 }
-#elif ANY(Workhorse, TAZPro)
-  #define DEFAULT_AXIS_STEPS_PER_UNIT   { 100, 100, 500, 420 }
+  #define DEFAULT_AXIS_STEPS_PER_UNIT   { 100, 100, 1600, 833 }
+#elif ANY(Workhorse, TAZPro, TAZProXT)
+    #define DEFAULT_AXIS_STEPS_PER_UNIT   { 100, 100, 500, 420 }
 #endif
 
 /**
@@ -1395,13 +1401,11 @@
  *                                      X, Y, Z [, I [, J [, K...]]], E0 [, E1[, E2...]]
  */
 
-#if ENABLED(Mini)
-  #define Z_FEEDRATE   5
-#elif ENABLED(MiniV2)
+#if ANY(MiniV2, Sidekick_289, Sidekick_747)
   #define Z_FEEDRATE   300
 #elif ENABLED(TAZ6)
   #define Z_FEEDRATE   5
-#elif ANY(Workhorse, TAZPro)
+#elif ANY(Workhorse, TAZPro, TAZProXT)
   #define Z_FEEDRATE   30
 #endif
 
@@ -1433,7 +1437,7 @@
  *   M204 R    Retract Acceleration
  *   M204 T    Travel Acceleration
  */
-#if ANY(Mini, MiniV2)
+#if ANY(MiniV2, Sidekick_289, Sidekick_747)
   #define DEFAULT_ACCELERATION          2000    // X, Y, Z and E acceleration for printing moves
   #define DEFAULT_TRAVEL_ACCELERATION   2000    // X, Y, Z acceleration for travel (non printing) moves
 #else
@@ -1452,7 +1456,7 @@
  */
 #define CLASSIC_JERK
 #if ENABLED(CLASSIC_JERK)
-  #if ANY(Mini, MiniV2)
+  #if ANY(MiniV2, Sidekick_289, Sidekick_747)
     #define DEFAULT_XJERK 12.0
     #define DEFAULT_YJERK 12.0
   #else
@@ -1565,7 +1569,9 @@
  * Use the nozzle as the probe, as with a conductive
  * nozzle system or a piezo-electric smart effector.
  */
-#define NOZZLE_AS_PROBE
+#if DISABLED(LULZBOT_BLTouch)
+  #define NOZZLE_AS_PROBE
+#endif
 
 /**
  * Z Servo Probe, such as an endstop switch on a rotating arm.
@@ -1576,7 +1582,9 @@
 /**
  * The BLTouch probe uses a Hall effect sensor and emulates a servo.
  */
-//#define BLTOUCH
+#if ENABLED(LULZBOT_BLTouch)
+  #define BLTOUCH
+#endif
 
 /**
  * MagLev V4 probe by MDD
@@ -1681,24 +1689,36 @@
  */
 #if ENABLED(MiniV2)
   #define NOZZLE_TO_PROBE_OFFSET { 0, 0, -1.1 }
-#elif ENABLED(Mini)
-  #define NOZZLE_TO_PROBE_OFFSET { 0, 0, -1.375 }
 #elif ANY(TAZ6, Workhorse)
   #define NOZZLE_TO_PROBE_OFFSET { 0, 0, -1.2 }
-#elif ENABLED(TAZPro)
+#elif ANY(TAZPro, TAZProXT)
   #define NOZZLE_TO_PROBE_OFFSET { 0, 0, -1.102 }
+#elif ANY(Sidekick_289, Sidekick_747)
+  #define NOZZLE_TO_PROBE_OFFSET { -1, 50, -2.1 }
 #endif
 
 
 // Most probes should stay away from the edges of the bed, but
 // with NOZZLE_AS_PROBE this can be negative for a wider probing area.
-#define PROBING_MARGIN 0
+#if defined (LULZBOT_BLTouch)
+  #define PROBING_MARGIN 10 
+#else
+  #if ENABLED(MiniV2)
+    #define PROBING_MARGIN -4
+  #elif ENABLED(TAZ6)
+    #define PROBING_MARGIN -8
+  #elif ENABLED(Workhorse)
+    #define PROBING_MARGIN -10
+  #elif ANY(TAZPro, TAZProXT)
+    #define PROBING_MARGIN -9
+  #endif
+#endif
 
 // X and Y axis travel speed (mm/min) between probes
-#define XY_PROBE_FEEDRATE (100*60)
+#define XY_PROBE_FEEDRATE (200*60)
 
 // Feedrate (mm/min) for the first approach when double-probing (MULTIPLE_PROBING == 2)
-#define Z_PROBE_FEEDRATE_FAST (8*60)
+#define Z_PROBE_FEEDRATE_FAST HOMING_FEEDRATE_Z
 
 // Feedrate (mm/min) for the "accurate" probe of each point
 #define Z_PROBE_FEEDRATE_SLOW (Z_PROBE_FEEDRATE_FAST / 2)
@@ -1777,7 +1797,7 @@
 #define Z_PROBE_OFFSET_RANGE_MAX 5
 
 // Enable the M48 repeatability test to test probe accuracy
-//#define Z_MIN_PROBE_REPEATABILITY_TEST
+#define Z_MIN_PROBE_REPEATABILITY_TEST
 
 // Before deploy/stow pause for user confirmation
 //#define PAUSE_BEFORE_DEPLOY_STOW
@@ -1803,9 +1823,11 @@
 //#define DELAY_BEFORE_PROBING 200  // (ms) To prevent vibrations from triggering piezo sensors
 
 // Require minimum nozzle and/or bed temperature for probing
-#define PREHEAT_BEFORE_PROBING
+#if ENABLED(LULZBOT_BLTouch)
+  #define PREHEAT_BEFORE_PROBING
+#endif
 #if ENABLED(PREHEAT_BEFORE_PROBING)
-  #define PROBING_NOZZLE_TEMP 160   // (°C) Only applies to E0 at this time
+  //#define PROBING_NOZZLE_TEMP 160   // (°C) Only applies to E0 at this time
   #define PROBING_BED_TEMP     50
 #endif
 
@@ -1845,13 +1867,22 @@
 // @section machine
 
 // Invert the stepper direction. Change (or reverse the motor connector) if an axis goes the wrong way.
-#if ENABLED(Workhorse)
-  #define INVERT_X_DIR true
-#else
+#if ANY(TAZ6, TAZPro, TAZProXT)
   #define INVERT_X_DIR false
+#else
+  #define INVERT_X_DIR true
 #endif
-#define INVERT_Y_DIR true
-#define INVERT_Z_DIR false
+#if ENABLED(MiniV2)
+  #define INVERT_Y_DIR false
+#else
+  #define INVERT_Y_DIR true
+#endif
+
+#if ANY(TAZ6,Workhorse, TAZPro, TAZProXT)
+  #define INVERT_Z_DIR false
+#else
+  #define INVERT_Z_DIR true
+#endif
 //#define INVERT_I_DIR false
 //#define INVERT_J_DIR false
 //#define INVERT_K_DIR false
@@ -1862,8 +1893,13 @@
 // @section extruder
 
 // For direct drive extruder v9 set to true, for geared extruder set to false.
-#define INVERT_E0_DIR true
-#define INVERT_E1_DIR true
+#if ANY(Workhorse,TAZ6, TAZPro, TAZProXT)
+  #define INVERT_E0_DIR true
+  #define INVERT_E1_DIR true
+#else
+  #define INVERT_E0_DIR false
+  #define INVERT_E1_DIR false
+#endif
 #define INVERT_E2_DIR false
 #define INVERT_E3_DIR false
 #define INVERT_E4_DIR false
@@ -1883,7 +1919,7 @@
  */
 //#define Z_IDLE_HEIGHT Z_HOME_POS
 
-#define Z_HOMING_HEIGHT  5      // (mm) Minimal Z height before homing (G28) for Z clearance above the bed, clamps, ...
+#define Z_HOMING_HEIGHT  15      // (mm) Minimal Z height before homing (G28) for Z clearance above the bed, clamps, ...
                                   // Be sure to have this much clearance over your Z_MAX_POS to prevent grinding.
 
 //#define Z_AFTER_HOMING  10      // (mm) Height to move to after homing Z
@@ -1891,12 +1927,12 @@
 // Direction of endstops when homing; 1=MAX, -1=MIN
 // :[-1,1]
 #define X_HOME_DIR -1
-#if ENABLED(Workhorse)
+#if ANY(Workhorse, Sidekick_289, Sidekick_747)
   #define Y_HOME_DIR -1
 #else
   #define Y_HOME_DIR 1
 #endif
-#if ANY(Mini, MiniV2, TAZPro, Workhorse)
+#if ANY(MiniV2, TAZPro, TAZProXT, Workhorse, Sidekick289, Sidekick747)
   #define Z_HOME_DIR 1
 #else
   #define Z_HOME_DIR -1
@@ -1912,62 +1948,114 @@
 
 // The size of the print bed
 
-#if ENABLED(Mini)
-  #define X_BED_SIZE 155.8 // <-- changed
-  #define Y_BED_SIZE 155.8 // <-- changed
-
+// The size of the printable area
+#if ENABLED(MiniV2)
+  #define X_BED_SIZE 160
+  #define Y_BED_SIZE 165
   // Travel limits (mm) after homing, corresponding to endstop positions.
-  #define X_MIN_POS 0.0 // <-- changed
-  #define Y_MIN_POS -8.0 // <-- changed
-  #define Z_MIN_POS -5 // <-- changed
-  #define X_MAX_POS 165.8 // <-- changed
-  #define Y_MAX_POS 196.0 // <-- changed
-  #define Z_MAX_POS 159 // <-- changed
-#elif ENABLED(MiniV2)
-  #define X_BED_SIZE 157 // <-- changed
-  #define Y_BED_SIZE 157 // <-- changed
+  #define LULZBOT_X_MIN_POS -4.25
+  #define LULZBOT_Y_MIN_POS -5
+  #define LULZBOT_Z_MIN_POS 0
+  #define LULZBOT_X_MAX_POS 161.5
+  #define LULZBOT_Y_MAX_POS 193
+  #define LULZBOT_Z_MAX_POS 183
 
-  // Travel limits (mm) after homing, corresponding to endstop positions.
-  #define X_MIN_POS -3 // <-- changed
-  #define Y_MIN_POS -5 // <-- changed
-  #define Z_MIN_POS 0
-  #define X_MAX_POS 173 // <-- changed
-  #define Y_MAX_POS 192 // <-- changed
-  #define Z_MAX_POS 183 // <-- changed
 #elif ENABLED(TAZ6)
-  #define X_BED_SIZE 281.4
-  #define Y_BED_SIZE 281.4
-
+  #define X_BED_SIZE 280
+  #define Y_BED_SIZE 285
   // Travel limits (mm) after homing, corresponding to endstop positions.
-  #define X_MIN_POS -20.1
-  #define Y_MIN_POS -20.1
-  #define Z_MIN_POS 0
-  #define X_MAX_POS 301.5
-  #define Y_MAX_POS 304.5
-  #define Z_MAX_POS 270
+  #define LULZBOT_X_MIN_POS -20.1
+  #define LULZBOT_Y_MIN_POS -21.6
+  #define LULZBOT_Z_MIN_POS 0
+  #define LULZBOT_X_MAX_POS 292
+  #define LULZBOT_Y_MAX_POS 303.5
+  #define LULZBOT_Z_MAX_POS 257.7
+
 #elif ENABLED(Workhorse)
-  #define X_BED_SIZE 280 // <-- changed
-  #define Y_BED_SIZE 280 // <-- changed
-
+  #define X_BED_SIZE 280
+  #define Y_BED_SIZE 280
   // Travel limits (mm) after homing, corresponding to endstop positions.
-  #define X_MIN_POS -50 // <-- changed
-  #define Y_MIN_POS -17 // <-- changed
-  #define Z_MIN_POS -2 // <-- changed
-  #define X_MAX_POS 295 // <-- changed
-  #define Y_MAX_POS 308 // <-- changed
-  #define Z_MAX_POS 299 // <-- changed
-#elif ENABLED(TAZPro)
-  #define X_BED_SIZE 280 // <-- changed
-  #define Y_BED_SIZE 280 // <-- changed
+  #define LULZBOT_X_MIN_POS -50
+  #define LULZBOT_Y_MIN_POS -17
+  #define LULZBOT_Z_MIN_POS -2
+  #define LULZBOT_X_MAX_POS 293
+  #define LULZBOT_Y_MAX_POS 308
+  #define LULZBOT_Z_MAX_POS 297
 
+#elif ENABLED(TAZPro) 
+   #if defined(TOOLHEAD_Quiver_DualExtruder)
+    #define X_BED_SIZE 281
+    #define Y_BED_SIZE 283
+    // Travel limits (mm) after homing, corresponding to endstop positions.
+    #define LULZBOT_X_MIN_POS -6// <-- changed
+    #define LULZBOT_Y_MIN_POS -13 // <-- changed
+    #define LULZBOT_X_MAX_POS 308 // <-- changed
+    #define LULZBOT_Y_MAX_POS 315 // <-- changed
+    #define LULZBOT_Z_MIN_POS -9 // <-- changed
+    #define LULZBOT_Z_MAX_POS 299 // <-- changed 
+  #else
+    #define X_BED_SIZE 284
+    #define Y_BED_SIZE 286
+    // Travel limits (mm) after homing, corresponding to endstop positions.
+    #define LULZBOT_X_MIN_POS -1
+    #define LULZBOT_Y_MIN_POS -9
+    #define LULZBOT_X_MAX_POS 313
+    #define LULZBOT_Y_MAX_POS 318
+    #define LULZBOT_Z_MIN_POS -9
+    #define LULZBOT_Z_MAX_POS 299 
+  #endif
+#elif ENABLED(TAZProXT)
+    #if defined(TOOLHEAD_Quiver_DualExtruder)
+    #define X_BED_SIZE 281
+    #define Y_BED_SIZE 283
+    // Travel limits (mm) after homing, corresponding to endstop positions.
+    #define LULZBOT_X_MIN_POS -6// <-- changed
+    #define LULZBOT_Y_MIN_POS -13 // <-- changed
+    #define LULZBOT_X_MAX_POS 308 // <-- changed
+    #define LULZBOT_Y_MAX_POS 315 // <-- changed
+    #define LULZBOT_Z_MIN_POS -9 // <-- changed
+    #define LULZBOT_Z_MAX_POS 599 // <-- changed 
+  #else
+    #define X_BED_SIZE 284
+    #define Y_BED_SIZE 286
+    // Travel limits (mm) after homing, corresponding to endstop positions.
+    #define LULZBOT_X_MIN_POS -1
+    #define LULZBOT_Y_MIN_POS -9
+    #define LULZBOT_X_MAX_POS 313
+    #define LULZBOT_Y_MAX_POS 318
+    #define LULZBOT_Z_MIN_POS -9
+    #define LULZBOT_Z_MAX_POS 599 
+  #endif
+#elif defined(Sidekick_289)
+  #define X_BED_SIZE 161           
+  #define Y_BED_SIZE 161            
+  // Travel limits (mm) after homing, corresponding to endstop positions.  
+  #define LULZBOT_X_MAX_POS  164   
+  #define LULZBOT_X_MIN_POS  -5.5  
+  #define LULZBOT_Y_MAX_POS  168   
+  #define LULZBOT_Y_MIN_POS  -34   
+  #define LULZBOT_Z_MIN_POS  0     
+  #define LULZBOT_Z_MAX_POS  181.5 
+
+#elif defined(Sidekick_747)
+  #define X_BED_SIZE 231            
+  #define Y_BED_SIZE 231            
   // Travel limits (mm) after homing, corresponding to endstop positions.
-  #define X_MIN_POS -27 // <-- changed
-  #define Y_MIN_POS -36 // <-- changed
-  #define Z_MIN_POS -9 // <-- changed
-  #define X_MAX_POS 299 // <-- changed
-  #define Y_MAX_POS 292 // <-- changed
-  #define Z_MAX_POS 292 // <-- changed
+  #define LULZBOT_X_MAX_POS  230   
+  #define LULZBOT_X_MIN_POS  -1.5     
+  #define LULZBOT_Y_MAX_POS  233    
+  #define LULZBOT_Y_MIN_POS  -23    
+  #define LULZBOT_Z_MIN_POS  0      
+  #define LULZBOT_Z_MAX_POS  244.5    
 #endif
+
+// Travel limits (mm) after homing, corresponding to endstop positions.
+#define X_MAX_POS (LULZBOT_X_MAX_POS + LULZBOT_TOOLHEAD_X_MAX_ADJ)
+#define X_MIN_POS (LULZBOT_X_MIN_POS + LULZBOT_TOOLHEAD_X_MIN_ADJ)
+#define Y_MAX_POS (LULZBOT_Y_MAX_POS + LULZBOT_TOOLHEAD_Y_MAX_ADJ)
+#define Y_MIN_POS (LULZBOT_Y_MIN_POS + LULZBOT_TOOLHEAD_Y_MIN_ADJ)
+#define Z_MAX_POS (LULZBOT_Z_MAX_POS + LULZBOT_TOOLHEAD_Z_MAX_ADJ)
+#define Z_MIN_POS (LULZBOT_Z_MIN_POS + LULZBOT_TOOLHEAD_Z_MIN_ADJ)
 //#define I_MIN_POS 0
 //#define I_MAX_POS 50
 //#define J_MIN_POS 0
@@ -2036,13 +2124,17 @@
  * RAMPS-based boards use SERVO3_PIN for the first runout sensor.
  * For other boards you may need to define FIL_RUNOUT_PIN, FIL_RUNOUT2_PIN, etc.
  */
-#if ENABLED(TAZPro)
+#if ENABLED(LULZBOT_FILAMENT_RUNOUT)
   #define FILAMENT_RUNOUT_SENSOR
 #endif
 #if ENABLED(FILAMENT_RUNOUT_SENSOR)
-  #define FIL_RUNOUT_ENABLED_DEFAULT true // Enable the sensor on startup. Override with M412 followed by M500.
-  #define NUM_RUNOUT_SENSORS   2     // Number of sensors, up to one per extruder. Define a FIL_RUNOUT#_PIN for each.
-  #define FIL_RUNOUT_STATE     LOW   // Pin state indicating that filament is NOT present.
+  #if defined (TAZ6)  //Standard Tool Head uses the filament runout port for the X-Max limit switch
+    #define FIL_RUNOUT_ENABLED_DEFAULT false // Enable the sensor on startup. Override with M412 followed by M500.
+  #else
+    #define FIL_RUNOUT_ENABLED_DEFAULT true // Enable the sensor on startup. Override with M412 followed by M500.
+  #endif
+  #define NUM_RUNOUT_SENSORS   LULZBOT_EXTRUDERS      // Number of sensors, up to one per extruder. Define a FIL_RUNOUT#_PIN for each.
+  #define FIL_RUNOUT_STATE     LOW        // Pin state indicating that filament is NOT present.
   #define FIL_RUNOUT_PULLUP               // Use internal pullup for filament runout pins.
   //#define FIL_RUNOUT_PULLDOWN           // Use internal pulldown for filament runout pins.
   //#define WATCH_ALL_RUNOUT_SENSORS      // Execute runout script on any triggering sensor, not only for the active extruder.
@@ -2084,12 +2176,14 @@
   // Commands to execute on filament runout.
   // With multiple runout sensors use the %c placeholder for the current tool in commands (e.g., "M600 T%c")
   // NOTE: After 'M412 H1' the host handles filament runout and this script does not apply.
-  #define FILAMENT_RUNOUT_SCRIPT "M600"
+  #define FILAMENT_RUNOUT_SCRIPT "M117 Filament Error\nM600"
 
   // After a runout is detected, continue printing this length of filament
   // before executing the runout script. Useful for a sensor at the end of
   // a feed tube. Requires 4 bytes SRAM per sensor, plus 4 bytes overhead.
-  #define FILAMENT_RUNOUT_DISTANCE_MM 14
+  #if ANY(TAZPro, TAZProXT)
+    #define FILAMENT_RUNOUT_DISTANCE_MM 14
+  #endif
 
   #ifdef FILAMENT_RUNOUT_DISTANCE_MM
     // Enable this option to use an encoder disc that toggles the runout pin
@@ -2177,8 +2271,13 @@
   // at which point movement will be level to the machine's XY plane.
   // The height can be set with M420 Z<height>
   #define ENABLE_LEVELING_FADE_HEIGHT
+  #if ENABLED(BLTouch)
+    #define FADE_HEIGHT  10.0
+  #else
+    #define FADE_HEIGHT  0.0
+  #endif
   #if ENABLED(ENABLE_LEVELING_FADE_HEIGHT)
-    #define DEFAULT_LEVELING_FADE_HEIGHT 0.0 // (mm) Default fade height.
+    #define DEFAULT_LEVELING_FADE_HEIGHT FADE_HEIGHT // (mm) Default fade height.
   #endif
 
   // For Cartesian machines, instead of dividing moves on mesh boundaries,
@@ -2206,11 +2305,22 @@
 #if EITHER(AUTO_BED_LEVELING_LINEAR, AUTO_BED_LEVELING_BILINEAR)
 
   // Set the number of grid points per dimension.
-  #define GRID_MAX_POINTS_X 2
-  #define GRID_MAX_POINTS_Y GRID_MAX_POINTS_X
+  #if defined (LULZBOT_LongBed)
+    #define GRID_MAX_POINTS_X 4  //4x8 grid to account for entire long bed printable area
+    #define GRID_MAX_POINTS_Y 8
+  #else
+    #if defined (Sidekick_747)
+      #define GRID_MAX_POINTS_X 4  //4x4 grid to avoid hitting the handle on the flex bed
+    #elif defined(Sidekick_289)
+      #define GRID_MAX_POINTS_X 3  //3x3 grid to increase startup speed
+    #else
+      #define GRID_MAX_POINTS_X 2  //2x2 grid of mounted washers
+    #endif
+    #define GRID_MAX_POINTS_Y GRID_MAX_POINTS_X
+  #endif
 
   // Probe along the Y axis, advancing X after each column
-  #if ANY(Mini, MiniV2)
+  #if ANY(MiniV2, TAZ6)
     #define PROBE_Y_FIRST
   #endif
   #if ENABLED(AUTO_BED_LEVELING_BILINEAR)
