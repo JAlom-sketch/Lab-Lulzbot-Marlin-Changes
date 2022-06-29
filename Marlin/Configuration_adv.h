@@ -3331,13 +3331,13 @@
    *   stepperY.intpol(0); \
    * }
    */
-  //#if ANY(Sidekick_289, Sidekick_747, MiniV2)
-    //#define TMC_ADV() {stepperX.toff(1);stepperX.hstrt(4);stepperX.hend(0);stepperX.tbl(1);stepperY.toff(1);stepperY.hstrt(4);stepperY.hend(0);stepperY.tbl(1);stepperZ.toff(1);stepperZ.hstrt(0);stepperZ.hend(0);stepperZ.tbl(1);stepperE0.toff(1);stepperE0.hstrt(0);stepperE0.hend(0);stepperE0.tbl(1);stepperX.shaft(1);stepperX.semin(1);stepperX.semax(3);stepperY.shaft(1);stepperY.semin(1);stepperY.semax(3);stepperZ.shaft(1);stepperZ.semin(1);stepperZ.semax(3);stepperE0.shaft(1);stepperE0.semin(1);stepperE0.semax(3);} // <-- changed
+  #if ANY(Sidekick_289, Sidekick_747, MiniV2)
+    #define TMC_ADV() {stepperX.toff(1);stepperX.hstrt(4);stepperX.hend(0);stepperX.tbl(1);stepperY.toff(1);stepperY.hstrt(4);stepperY.hend(0);stepperY.tbl(1);stepperZ.toff(1);stepperZ.hstrt(0);stepperZ.hend(0);stepperZ.tbl(1);stepperE0.toff(1);stepperE0.hstrt(0);stepperE0.hend(0);stepperE0.tbl(1);stepperX.shaft(1);stepperX.semin(1);stepperX.semax(3);stepperY.shaft(1);stepperY.semin(1);stepperY.semax(3);stepperZ.shaft(1);stepperZ.semin(1);stepperZ.semax(3);stepperE0.shaft(1);stepperE0.semin(1);stepperE0.semax(3);} // <-- changed
   //#elif ANY(TAZPro, TAZProXT)
     //#define TMC_ADV() {stepperX.shaft(0);stepperX.semin(1);stepperX.semax(3);stepperY.shaft(0);stepperY.semin(1);stepperY.semax(3);stepperZ.shaft(0);stepperZ.semin(1);stepperZ.semax(3);stepperE0.shaft(0);stepperE0.semin(1);stepperE0.semax(3);stepperE1.shaft(0);stepperE1.semin(1);stepperE1.semax(3);} // <-- changed
-  //#else
+  #else
     #define TMC_ADV() {  }
-  //#endif
+  #endif
 #endif // HAS_TRINAMIC_CONFIG
 
 // @section L64XX
