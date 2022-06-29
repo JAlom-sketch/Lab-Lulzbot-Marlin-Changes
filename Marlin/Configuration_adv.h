@@ -1306,9 +1306,12 @@
  *    M908 - BQ_ZUM_MEGA_3D, RAMBO, PRINTRBOARD_REVF, RIGIDBOARD_V2 & SCOOVO_X9H
  *    M909, M910 & LCD - only PRINTRBOARD_REVF & RIGIDBOARD_V2
  */
-#if ENABLED(Mini)
-  #define PWM_MOTOR_CURRENT {1300, 1630, 1250}  // Values in milliamps
-#elif ENABLED(TAZ6)
+
+#if !defined(LULZBOT_MOTOR_CURRENT_E1)
+  #define LULZBOT_MOTOR_CURRENT_E1 0
+#endif
+
+#if ENABLED(TAZ6)
   #define DIGIPOT_MOTOR_CURRENT { 175,175,200,LULZBOT_MOTOR_CURRENT_E0, LULZBOT_MOTOR_CURRENT_E1 }   // Values 0-255 (RAMBO 135 = ~0.75A, 185 = ~1A)
 #elif ENABLED(Workhorse)
   #define DIGIPOT_MOTOR_CURRENT {175, 175, 180, LULZBOT_MOTOR_CURRENT_E0, LULZBOT_MOTOR_CURRENT_E1} // <-- changed:  Values 0-255 (RAMBO 135 = ~0.75A, 185 = ~1A)
@@ -3079,7 +3082,7 @@
    * The default SW SPI pins are defined the respective pins files,
    * but you can override or define them here.
    */
-  #if ENABLED(TAZPro)
+  #if ANY(TAZPro, TAZProXT)
     #define TMC_USE_SW_SPI
   #endif
   //#define TMC_SW_MOSI       -1
@@ -3328,13 +3331,13 @@
    *   stepperY.intpol(0); \
    * }
    */
-  #if ANY(Sidekick_289, Sidekick_747, MiniV2)
-    #define TMC_ADV() {stepperX.toff(1);stepperX.hstrt(4);stepperX.hend(0);stepperX.tbl(1);stepperY.toff(1);stepperY.hstrt(4);stepperY.hend(0);stepperY.tbl(1);stepperZ.toff(1);stepperZ.hstrt(0);stepperZ.hend(0);stepperZ.tbl(1);stepperE0.toff(1);stepperE0.hstrt(0);stepperE0.hend(0);stepperE0.tbl(1);stepperX.shaft(1);stepperX.semin(1);stepperX.semax(3);stepperY.shaft(1);stepperY.semin(1);stepperY.semax(3);stepperZ.shaft(1);stepperZ.semin(1);stepperZ.semax(3);stepperE0.shaft(1);stepperE0.semin(1);stepperE0.semax(3);} // <-- changed
-  #elif ANY(TAZPro, TAZProXT)
-    #define TMC_ADV() {stepperX.shaft(0);stepperX.semin(1);stepperX.semax(3);stepperY.shaft(0);stepperY.semin(1);stepperY.semax(3);stepperZ.shaft(0);stepperZ.semin(1);stepperZ.semax(3);stepperE0.shaft(0);stepperE0.semin(1);stepperE0.semax(3);stepperE1.shaft(0);stepperE1.semin(1);stepperE1.semax(3);} // <-- changed
-  #else
+  //#if ANY(Sidekick_289, Sidekick_747, MiniV2)
+    //#define TMC_ADV() {stepperX.toff(1);stepperX.hstrt(4);stepperX.hend(0);stepperX.tbl(1);stepperY.toff(1);stepperY.hstrt(4);stepperY.hend(0);stepperY.tbl(1);stepperZ.toff(1);stepperZ.hstrt(0);stepperZ.hend(0);stepperZ.tbl(1);stepperE0.toff(1);stepperE0.hstrt(0);stepperE0.hend(0);stepperE0.tbl(1);stepperX.shaft(1);stepperX.semin(1);stepperX.semax(3);stepperY.shaft(1);stepperY.semin(1);stepperY.semax(3);stepperZ.shaft(1);stepperZ.semin(1);stepperZ.semax(3);stepperE0.shaft(1);stepperE0.semin(1);stepperE0.semax(3);} // <-- changed
+  //#elif ANY(TAZPro, TAZProXT)
+    //#define TMC_ADV() {stepperX.shaft(0);stepperX.semin(1);stepperX.semax(3);stepperY.shaft(0);stepperY.semin(1);stepperY.semax(3);stepperZ.shaft(0);stepperZ.semin(1);stepperZ.semax(3);stepperE0.shaft(0);stepperE0.semin(1);stepperE0.semax(3);stepperE1.shaft(0);stepperE1.semin(1);stepperE1.semax(3);} // <-- changed
+  //#else
     #define TMC_ADV() {  }
-  #endif
+  //#endif
 #endif // HAS_TRINAMIC_CONFIG
 
 // @section L64XX
