@@ -3331,13 +3331,8 @@
    *   stepperY.intpol(0); \
    * }
    */
-  #if ANY(Sidekick_289, Sidekick_747, MiniV2)
-    #define TMC_ADV() {stepperX.toff(1);stepperX.hstrt(4);stepperX.hend(0);stepperX.tbl(1);stepperY.toff(1);stepperY.hstrt(4);stepperY.hend(0);stepperY.tbl(1);stepperZ.toff(1);stepperZ.hstrt(0);stepperZ.hend(0);stepperZ.tbl(1);stepperE0.toff(1);stepperE0.hstrt(0);stepperE0.hend(0);stepperE0.tbl(1);stepperX.shaft(1);stepperX.semin(1);stepperX.semax(3);stepperY.shaft(1);stepperY.semin(1);stepperY.semax(3);stepperZ.shaft(1);stepperZ.semin(1);stepperZ.semax(3);stepperE0.shaft(1);stepperE0.semin(1);stepperE0.semax(3);} // <-- changed
-  //#elif ANY(TAZPro, TAZProXT)
-    //#define TMC_ADV() {stepperX.shaft(0);stepperX.semin(1);stepperX.semax(3);stepperY.shaft(0);stepperY.semin(1);stepperY.semax(3);stepperZ.shaft(0);stepperZ.semin(1);stepperZ.semax(3);stepperE0.shaft(0);stepperE0.semin(1);stepperE0.semax(3);stepperE1.shaft(0);stepperE1.semin(1);stepperE1.semax(3);} // <-- changed
-  #else
-    #define TMC_ADV() {  }
-  #endif
+  #define TMC_ADV() {  }
+
 #endif // HAS_TRINAMIC_CONFIG
 
 // @section L64XX
@@ -4140,9 +4135,9 @@
   #define CUSTOM_MENU_MAIN_SCRIPT_RETURN   // Return to status screen after a script
   #define CUSTOM_MENU_MAIN_ONLY_IDLE         // Only show custom menu when the machine is idle
 
-  #define SK_DEFAULT_PID "26.90I2.41D75.19"
+  #define SK_DEFAULT_PID   "26.90I2.41D75.19"
   #define TAZ6_DEFAULT_PID "P28.79I1.91D108.51"
-  #define DEFAULT_PID "P21.0I1.78D61.93"
+  #define DEFAULT_PID      "P21.0I1.78D61.93"
 
   #if ANY(TAZ6, Workhorse) //conversion to digipot units = ((mA-750)/5+135)
     #define E_CURRENT_Aero "160" //((875-750)/5+135) = 160
