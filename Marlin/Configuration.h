@@ -104,7 +104,7 @@
 // Author info of this build printed to the host during boot and M115
 #define STRING_CONFIG_H_AUTHOR "Lulzbot" // Who made the changes.
 #define CUSTOM_VERSION_FILE Version.h // Path from the root directory (no quotes)
-#define LULZBOT_FW_VERSION "2.1.0.0.0
+#define LULZBOT_FW_VERSION "2.1.0.0.0"
 
 /**
  * *** VENDORS PLEASE READ ***
@@ -130,9 +130,7 @@
 
 // Choose the name from boards.h that matches your setup
 #ifndef MOTHERBOARD
-  #if ENABLED(Mini)
-    #define MOTHERBOARD BOARD_MINIRAMBO
-  #elif ANY(MiniV2, Sidekick_289, Sidekick_747)
+  #if ANY(MiniV2, Sidekick_289, Sidekick_747)
     #define MOTHERBOARD BOARD_EINSY_RETRO
   #elif ANY(Workhorse, TAZ6)
     #define MOTHERBOARD BOARD_RAMBO
@@ -193,28 +191,35 @@
 // Name displayed in the LCD "Ready" message and Info menu
 #if ENABLED(MiniV2)
   #define CUSTOM_MACHINE_NAME "LulzBot Mini 2"
+  #define LULZBOT_LCD_MACHINE_NAME "Mini 2"
   #define MACHINE_UUID "e5502411-d46d-421d-ba3a-a20126d7930f" // <-- changed
 #elif ENABLED(TAZ6)
   #define CUSTOM_MACHINE_NAME "LulzBot Taz 6"
+  #define LULZBOT_LCD_MACHINE_NAME "TAZ 6"
   #define MACHINE_UUID "845f003c-aebd-4e53-a6b9-7d0984fde609" // <-- changed
 #elif ENABLED(Workhorse)
   #define CUSTOM_MACHINE_NAME "LulzBot Taz Workhorse"
+  #define LULZBOT_LCD_MACHINE_NAME "TAZ Workhorse"
   #define MACHINE_UUID "5ee798fb-4062-4d35-8224-5e846ffb45a5" // <-- changed
 #elif ENABLED(TAZPro)
   #define CUSTOM_MACHINE_NAME "LulzBot TAZ Pro"
+  #define LULZBOT_LCD_MACHINE_NAME "TAZ Pro"
   #define MACHINE_UUID "a952577d-8722-483a-999d-acdc9e772b7b" // <-- changed
   #define LULZBOT_FILAMENT_RUNOUT                             // <-- changed
 #elif ENABLED(TAZProXT)
   #define CUSTOM_MACHINE_NAME "LulzBot TAZ ProXT"
+  #define LULZBOT_LCD_MACHINE_NAME "TAZ ProXT"
   #define MACHINE_UUID "28ac1ce7-ca05-4f8e-8f1f-1d2f4496a1eb" // <-- changed
   #define LULZBOT_FILAMENT_RUNOUT                             // <-- changed
 #elif ENABLED(Sidekick_289)
   #define CUSTOM_MACHINE_NAME "Taz SideKick 289"
+  #define LULZBOT_LCD_MACHINE_NAME "SideKick 289"
   #define MACHINE_UUID "2c6bb70e-20ef-4fb1-962d-c71d40e176b6" // <-- changed
   #define LULZBOT_BLTouch                                     // <-- changed
   #define LULZBOT_FILAMENT_RUNOUT                             // <-- changed
 #elif ENABLED(Sidekick_747)
   #define CUSTOM_MACHINE_NAME "Taz SideKick 747"
+  #define LULZBOT_LCD_MACHINE_NAME "SideKick 747"
   #define MACHINE_UUID "5b3d61d6-80f8-41ed-bd8a-9c765f8d523d" // <-- changed
   #define LULZBOT_BLTouch                                     // <-- changed
   #define LULZBOT_FILAMENT_RUNOUT                             // <-- changed
@@ -1070,7 +1075,7 @@
     #define DEFAULT_bedKp 384.33
     #define DEFAULT_bedKi 72.17
     #define DEFAULT_bedKd 511.64
-  #elif ANY(Workhorse, TAZPro)
+  #elif ANY(Workhorse, TAZPro, TAZProXT)
     #define DEFAULT_bedKp 286.02
     #define DEFAULT_bedKi 54.55
     #define DEFAULT_bedKd 374.9
@@ -1335,7 +1340,6 @@
 #define U_MAX_ENDSTOP_INVERTING false // Set to true to invert the logic of the endstop.
 #define V_MAX_ENDSTOP_INVERTING false // Set to true to invert the logic of the endstop.
 #define W_MAX_ENDSTOP_INVERTING false // Set to true to invert the logic of the endstop.
-#define Z_MIN_PROBE_ENDSTOP_INVERTING true // Set to true to invert the logic of the probe.
 
 // Enable this feature if all enabled endstop pins are interrupt-capable.
 // This will remove the need to poll the interrupt pins, saving many CPU cycles.
