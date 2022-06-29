@@ -2454,19 +2454,24 @@
  * - Allows Z homing only when XY positions are known and trusted.
  * - If stepper drivers sleep, XY homing may be required again before Z homing.
  */
-#if ENABLED(TAZ6)
+#if ANY(TAZ6, Sidekick_289, Sidekick_747)
   #define Z_SAFE_HOMING
 #endif
 
 #if ENABLED(Z_SAFE_HOMING)
-  #define Z_SAFE_HOMING_X_POINT -19  // X point for Z homing
-  #define Z_SAFE_HOMING_Y_POINT 262  // Y point for Z homing
+  #if ENABLED(TAZ6)
+    #define Z_SAFE_HOMING_X_POINT -20.1  // X point for Z homing
+    #define Z_SAFE_HOMING_Y_POINT 259.5  // Y point for Z homing
+  #elif ANY(Sidekick_289, Sisdekick_747)
+    #define Z_SAFE_HOMING_X_POINT (X_CENTER)  // X point for Z homing
+    #define Z_SAFE_HOMING_Y_POINT (Y_BED_SIZE/2)  // Y point for Z homing
+  #endif
 #endif
 
-// Homing speeds (mm/m)
-#if ENABLED(MiniV2)
-  #define HOMING_FEEDRATE_Z  2400
-#elif ENABLED(Workhorse)
+// Homing speeds (mm/min)
+#if ANY(MiniV2, Sidekick_289, Sidekick_747)
+  #define HOMING_FEEDRATE_Z  (50*60)
+#elif ANY(Workhorse, TAZPro, TAZProXT)
   #define HOMING_FEEDRATE_Z  1800
 #else
   #define HOMING_FEEDRATE_Z  (4*60)
@@ -2609,11 +2614,18 @@
 
 #if ENABLED(NOZZLE_PARK_FEATURE)
   // Specify a park position as { X, Y, Z_raise }
-  #define NOZZLE_PARK_POINT { X_CENTER, (Y_MAX_POS - 5), 5 }
+  #if ANY(Sidekick_289, Sidekick_747, MiniV2)
+    #define NOZZLE_PARK_POINT { X_CENTER, (Y_MAX_POS - 5), Z_MAX_POS }
+  #elif ENABLED(TAZ6)
+    #define NOZZLE_PARK_POINT { X_CENTER, (Y_MAX_POS - 5), (10) }
+  #else
+    #define NOZZLE_PARK_POINT { X_CENTER, (Y_MAX_POS - 5), (Z_MAX_POS/2) }
+  #endif
   #define NOZZLE_PARK_MOVE          0   // Park motion: 0 = XY Move, 1 = X Only, 2 = Y Only, 3 = X before Y, 4 = Y before X
-  #define NOZZLE_PARK_Z_RAISE_MIN   2   // (mm) Always raise Z by at least this distance
+  #define NOZZLE_PARK_Z_RAISE_MIN  10   // (mm) Always raise Z by at least this distance
   #define NOZZLE_PARK_XY_FEEDRATE 100   // (mm/s) X and Y axes feedrate (also used for delta Z axis)
   #define NOZZLE_PARK_Z_FEEDRATE    5   // (mm/s) Z axis feedrate (not used for delta printers)
+  #define PARK_NOZZLE_MENU_OPTION       // Adds an option to park the nozzle under motion menu
 #endif
 
 /**
@@ -2654,10 +2666,12 @@
  * Attention: EXPERIMENTAL. G-code arguments may change.
  *
  */
-#define NOZZLE_CLEAN_FEATURE
+#if DISABLED(LULZBOT_BLTouch)
+  #define NOZZLE_CLEAN_FEATURE
+#endif
 
 #if ENABLED(NOZZLE_CLEAN_FEATURE)
-  #define CLEAN_SCRIPT "M117 Hot end heating...\nM104 S170\nG28 O1\nM117 Wiping nozzle\nT0\nG1 X-17 Y25 Z10 F4000\nM109 R170\nG1 Z1\nM114\nG1 X-17 Y25\nG1 X-17 Y95\nG1 X-17 Y25\nG1 X-17 Y95\nG1 X-17 Y25\nG1 X-17 Y95\nG1 X-17 Y25\nG1 X-17 Y95\nG1 X-17 Y25\nG1 X-17 Y95\nG1 X-17 Y25\nG1 X-17 Y95\nG1 Z15\nM400\nM106 S255\nG0 X-10.0 Y-9.0M109 R160\nM107"
+  #define CLEAN_SCRIPT "M117 Cleaning nozzle...\nG28 O\nM109 S170\nG12\nM106 S255\nM109 S170\nM77\nM117 Nozzle clean"
 
   // Default number of pattern repetitions
   #define NOZZLE_CLEAN_STROKES  12
@@ -2667,11 +2681,14 @@
 
   // Specify positions for each tool as { { X, Y, Z }, { X, Y, Z } }
   // Dual hotend system may use { {  -20, (Y_BED_SIZE / 2), (Z_MIN_POS + 1) },  {  420, (Y_BED_SIZE / 2), (Z_MIN_POS + 1) }}
-  #if ANY(Mini, MiniV2)
-    #define NOZZLE_CLEAN_START_POINT {  45, 175, 0 }
-    #define NOZZLE_CLEAN_END_POINT   { 115, 175, 0 }
-  #elif ENABLED(TAZPro)
-    #define NOZZLE_CLEAN_START_POINT {{  -17, 95, 1 }, { 297, 95, 1 }}
+  #if ENABLED(MiniV2)
+    #define NOZZLE_CLEAN_START_POINT {  45, 177, 0 }
+    #define NOZZLE_CLEAN_END_POINT   { 115, 177, 0 }
+  #elif ANY(TAZPro, TAZProXT) && ENABLED(LULZBOT_UNIVERSAL_TOOLHEAD)
+    #define NOZZLE_CLEAN_START_POINT { 300, 95, 1 }
+    #define NOZZLE_CLEAN_END_POINT   { 300, 25, 1 }
+  #elif ANY(TAZPro, TAZProXT) && ENABLED(TOOLHEAD_Quiver_DualExtruder) 
+    #define NOZZLE_CLEAN_START_POINT {{ -17, 95, 1 }, { 297, 95, 1 }}
     #define NOZZLE_CLEAN_END_POINT   {{ -17, 25, 1 }, { 297, 25, 1 }}
   #else
     #define NOZZLE_CLEAN_START_POINT {  -17, 95, 1 }
@@ -2699,18 +2716,17 @@
   //#define NOZZLE_CLEAN_HEATUP       // Heat up the nozzle instead of skipping wipe
 
   // Explicit wipe G-code script applies to a G12 with no arguments.
-#if ENABLED(MiniV2)
-  #define WIPE_SEQUENCE_COMMANDS "M117 Hot end heating...\nM104 S170\nG28 O1\nM117 Wiping nozzle\nT0\nG1 X115 Y175 Z10 F4000\nM109 R170\nG1 Z1\nM114\nG1 X115 Y175\nG1 X45 Y175\nG1 X115 Y175\nG1 X45 Y175\nG1 X115 Y175\nG1 X45 Y175\nG1 X115 Y175\nG1 X45 Y175\nG1 X115 Y175\nG1 X45 Y175\nG1 X115 Y175\nG1 X45 Y175\nG1 Z15\nM400\nM106 S255\nG0 X-3.0 Y168.8M109 R160\nM107"
-#elif ENABLED(Mini)
-  #define WIPE_SEQUENCE_COMMANDS "M117 Hot end heating...\nM104 S170\nG28 O1\nM117 Wiping nozzle\nT0\nG1 X115 Y175 Z10 F4000\nM109 R170\nG1 Z1\nM114\nG1 X115 Y175\nG1 X45 Y175\nG1 X115 Y175\nG1 X45 Y175\nG1 X115 Y175\nG1 X45 Y175\nG1 X115 Y175\nG1 X45 Y175\nG1 X115 Y175\nG1 X45 Y175\nG1 X115 Y175\nG1 X45 Y175\nG1 Z15\nM400\nM106 S255\nG0 X0.0 Y168.8M109 R160\nM107"
-#elif ENABLED(TAZ6)
-  #define WIPE_SEQUENCE_COMMANDS "M117 Hot end heating...\nM104 S170\nG28 O1\nM117 Wiping nozzle\nT0\nG1 X-17 Y25 Z10 F4000\nM109 R170\nG1 Z1\nM114\nG1 X-17 Y25\nG1 X-17 Y95\nG1 X-17 Y25\nG1 X-17 Y95\nG1 X-17 Y25\nG1 X-17 Y95\nG1 X-17 Y25\nG1 X-17 Y95\nG1 X-17 Y25\nG1 X-17 Y95\nG1 X-17 Y25\nG1 X-17 Y95\nG1 Z15\nM400\nM106 S255\nG0 X-10 Y-9M109 R160\nM107"
-#elif ENABLED(Workhorse)
-  #define WIPE_SEQUENCE_COMMANDS "M117 Hot end heating...\nM104 S170\nG28 O1\nM117 Wiping nozzle\nT0\nG1 X-17 Y25 Z10 F4000\nM109 R170\nG1 Z1\nM114\nG1 X-17 Y25\nG1 X-17 Y95\nG1 X-17 Y25\nG1 X-17 Y95\nG1 X-17 Y25\nG1 X-17 Y95\nG1 X-17 Y25\nG1 X-17 Y95\nG1 X-17 Y25\nG1 X-17 Y95\nG1 X-17 Y25\nG1 X-17 Y95\nG1 Z15\nM400\nM106 S255\nG0 X-10.0 Y-9.0M109 R160\nM107"
-#elif ENABLED(TAZPro)
-  //#define WIPE_SEQUENCE_COMMANDS "G1 X297 Y25 Z10 F4000\nM109 R170 T0\nM109 R170 T1\nG1 Z1\nM114\nG1 X297 Y25\nG1 X297 Y95\nG1 X297 Y25\nG1 X297 Y95\nG1 X297 Y25\nG1 X297 Y95\nG1 X297 Y25\nG1 X297 Y95\nG1 X297 Y25\nG1 X297 Y95\nG1 X297 Y25\nG1 X297 Y95\nG1 Z15\nM400\nM106 S255 \nG0 X150 F5000\nT0\nM106 S255\nG0 X-10.0 Y-9.0M109 R160 T0\nM109 R160 T1\nM107"
-#endif
-
+  #if ENABLED(MiniV2)
+    #define WIPE_SEQUENCE_COMMANDS "G28O\nM117 Wiping nozzle\nG1 X115 Y177 Z10 F4000\\nG1 Z-1\nM114\nG1 X115 \nG1 X45 \nG1 X115 \nG1 X45 \nG1 X115 \nG1 X45 \nG1 X115 \nG1 X45 \nG1 X115 \nG1 X45 \nG1 X115 \nG1 X45 \nG1 Z15\nM400\nM117 Wipe Complete"
+  #elif ENABLED(TAZ6)
+    #define WIPE_SEQUENCE_COMMANDS "G28O\nM117 Wiping nozzle\nT0\nG1 X-17 Y25 Z10 F4000\nG1 Z1\nM114\nG1 Y25\nG1 Y95\nG1 Y25\nG1 Y95\nG1 Y25\nG1 Y95\nG1 Y25\nG1 Y95\nG1 Y25\nG1 Y95\nG1 Y25\nG1 Y95\nG1 Z15\nM400\nM117 Wipe Complete"
+  #elif ENABLED(Workhorse)
+    #define WIPE_SEQUENCE_COMMANDS "G28O\nM117 Wiping nozzle\nT0\nG1 X-17 Y25 Z10 F4000\nG1 Z1\nM114\nG1 X-17 Y25\nG1 X-17 Y95\nG1 X-17 Y25\nG1 X-17 Y95\nG1 X-17 Y25\nG1 X-17 Y95\nG1 X-17 Y25\nG1 X-17 Y95\nG1 X-17 Y25\nG1 X-17 Y95\nG1 X-17 Y25\nG1 X-17 Y95\nG1 Z15\nM400\nM117 Wipe Complete"
+  #elif ANY(TAZPro, TAZProXT) && ENABLED(LULZBOT_UNIVERSAL_TOOLHEAD)
+    #define WIPE_SEQUENCE_COMMANDS "G28O\nM117 Wiping nozzle\nT0\nG1 X300 Y25 Z10 F4000\nG1 Z-1 F4000\nM114\nG1 Y25 F4000\nG1 Y95 F4000\nG1 Y25 F4000\nG1 Y95 F4000\nG1 Y25 F4000\nG1 Y95 F4000\nG1 Y25 F4000\nG1 Y95 F4000\nG1 Y25 F4000\nG1 Y95 F4000\nG1 Y25 F4000\nG1 Y95 F4000\nG1 Z15 F4000\nM400\nG0 Y-9.0 F4000\nM117 Wipe Complete"
+  #elif ANY(TAZPro, TAZProXT) && ENABLED(TOOLHEAD_Quiver_DualExtruder) 
+    #define WIPE_SEQUENCE_COMMANDS "G1 X-17 Y25 Z10 F4000\nT0\nG1 Z-1\nM114\nG1 X-17 Y25\nG1 X-17 Y95\nG1 X-17 Y25\nG1 X-17 Y95\nG1 X-17 Y25\nG1 X-17 Y95\nG1 X-17 Y25\nG1 X-17 Y95\nG1 X-17 Y25\nG1 X-17 Y95\nG1 X-17 Y25\nG1 X-17 Y95\nG1 Z15\nM400"
+  #endif
 #endif
 
 /**
@@ -2891,7 +2907,7 @@
 //
 //  Set this option if CLOCKWISE causes values to DECREASE
 //
-#if ENABLED(MiniV2)
+#if ANY(MiniV2, Sidekick_289, Sidekick_747)
   #define REVERSE_ENCODER_DIRECTION
 #endif
 
@@ -3098,8 +3114,12 @@
 // RepRapDiscount FULL GRAPHIC Smart Controller
 // https://reprap.org/wiki/RepRapDiscount_Full_Graphic_Smart_Controller
 //
-#if DISABLED(TAZPro)
+#if DISABLED(TAZPro, TAZProXT)
   #define REPRAP_DISCOUNT_FULL_GRAPHIC_SMART_CONTROLLER
+
+  #define ST7920_DELAY_1 DELAY_NS(200) // After CLK LOW
+  #define ST7920_DELAY_2 DELAY_NS(400) // After DAT
+  #define ST7920_DELAY_3 DELAY_NS(200) // After CLK HIGH
 #endif
 
 //
@@ -3349,7 +3369,7 @@
 // Touch UI for FTDI EVE (FT800/FT810) displays
 // See Configuration_adv.h for all configuration options.
 //
-#if ENABLED(TAZPro)
+#if ANY(TAZPro, TAZProXT)
   #define TOUCH_UI_FTDI_EVE
 #endif
 
@@ -3574,7 +3594,7 @@
 // Use software PWM to drive the fan, as for the heaters. This uses a very low frequency
 // which is not as annoying as with the hardware PWM. On the other hand, if this frequency
 // is too low, you should also increment SOFT_PWM_SCALE.
-#if ENABLED(TAZPro)
+#if ANY(TAZPro, TAZProXT)
   #define FAN_SOFT_PWM
 #endif
 
@@ -3700,14 +3720,16 @@
  * Set this manually if there are extra servos needing manual control.
  * Leave undefined or set to 0 to entirely disable the servo subsystem.
  */
-#if ENABLED(TAZPro)
-  #define NUM_SERVOS 2 // Note: Servo index starts with 0 for M280-M282 commands
+#if defined(LULZBOT_NUM_SERVOS)
+  #define NUM_SERVOS LULZBOT_NUM_SERVOS  // Servo index starts with 0 for M280 command
 #endif
 
 // (ms) Delay before the next move will start, to give the servo time to reach its target angle.
 // 300ms is a good value but you can try less delay.
 // If the servo can't reach the requested position, increase it.
-#define SERVO_DELAY { 300, 300 }
+#if defined(LULZBOT_SERVO_DELAY)
+  #define SERVO_DELAY LULZBOT_SERVO_DELAY
+#endif
 
 // Only power servos during movement, otherwise leave off to prevent jitter
 //#define DEACTIVATE_SERVOS_AFTER_MOVE
