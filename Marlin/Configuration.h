@@ -1411,7 +1411,7 @@
 #elif ENABLED(TAZ6)
   #define Z_FEEDRATE   5
 #elif ANY(Workhorse, TAZPro, TAZProXT)
-  #define Z_FEEDRATE   30
+  #define Z_FEEDRATE   25             // <-- changed: LDO geared motor max feedrate
 #endif
 
 #define DEFAULT_MAX_FEEDRATE          { 300, 300, Z_FEEDRATE, 40 }
