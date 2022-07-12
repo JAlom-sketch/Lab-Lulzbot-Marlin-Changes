@@ -9,7 +9,7 @@
 
 //#define TazDualZ
 #define LULZBOT_FILAMENT_RUNOUT
-//#define LULZBOT_BLTouch
+#define LULZBOT_BLTouch
 //#define LULZBOT_LongBed
 /************** Uncomment a Tool Head Option From Below *********************/
 #define LULZBOT_UNIVERSAL_TOOLHEAD
@@ -1245,7 +1245,7 @@
 #if DISABLED(Workhorse, Sidekick_289, Sidekick_747)
   #define USE_YMAX_PLUG
 #endif
-#if DISABLED(LULZBOT_BLTouch)
+#if NONE(Sidekick_289, Sidekick_747)
   #define USE_ZMAX_PLUG
 #endif
 //#define USE_IMAX_PLUG
@@ -1696,8 +1696,10 @@
   #define NOZZLE_TO_PROBE_OFFSET { 0, 0, -1.1 }
 #elif ANY(TAZ6, Workhorse)
   #define NOZZLE_TO_PROBE_OFFSET { 0, 0, -1.2 }
-#elif ANY(TAZPro, TAZProXT)
+#elif ANY(TAZPro, TAZProXT) && DISABLED(LULZBOT_BLTouch)
   #define NOZZLE_TO_PROBE_OFFSET { 0, 0, -1.102 }
+#elif ANY(TAZPro, TAZProXT) && ENABLED(LULZBOT_BLTouch)
+  #define NOZZLE_TO_PROBE_OFFSET { -38, -20, -3.2 }
 #elif ANY(Sidekick_289, Sidekick_747)
   #define NOZZLE_TO_PROBE_OFFSET { -1, 50, -2.1 }
 #endif
@@ -1706,7 +1708,7 @@
 // Most probes should stay away from the edges of the bed, but
 // with NOZZLE_AS_PROBE this can be negative for a wider probing area.
 #if defined (LULZBOT_BLTouch)
-  #define PROBING_MARGIN 10 
+  #define PROBING_MARGIN 20 
 #else
   #if ENABLED(MiniV2)
     #define PROBING_MARGIN -4
@@ -1723,8 +1725,11 @@
 #define XY_PROBE_FEEDRATE (100*60)
 
 // Feedrate (mm/min) for the first approach when double-probing (MULTIPLE_PROBING == 2)
-#define Z_PROBE_FEEDRATE_FAST (8*60)
-
+#if defined(LULZBOT_BLTouch)
+  #define Z_PROBE_FEEDRATE_FAST HOMING_FEEDRATE_Z
+#else
+  #define Z_PROBE_FEEDRATE_FAST (8*60)
+#endif
 // Feedrate (mm/min) for the "accurate" probe of each point
 #define Z_PROBE_FEEDRATE_SLOW (Z_PROBE_FEEDRATE_FAST / 2)
 
@@ -2314,10 +2319,12 @@
     #define GRID_MAX_POINTS_X 4  //4x8 grid to account for entire long bed printable area
     #define GRID_MAX_POINTS_Y 8
   #else
-    #if defined (Sidekick_747)
-      #define GRID_MAX_POINTS_X 4  //4x4 grid to avoid hitting the handle on the flex bed
-    #elif defined(Sidekick_289)
-      #define GRID_MAX_POINTS_X 3  //3x3 grid to increase startup speed
+    #if defined (Sidekick_289)
+      #define GRID_MAX_POINTS_X 3  //3x3 grid to avoid hitting the handle on the flex bed
+    #elif defined(Sidekick_747)
+      #define GRID_MAX_POINTS_X 4  //4x4 grid to increase startup speed
+    #elif defined(LULZBOT_BLTouch) && ANY(TAZPro, TAZProXT,Workhorse, TAZ6)
+      #define GRID_MAX_POINTS_X 4  //4x4 grid to increase startup speed
     #else
       #define GRID_MAX_POINTS_X 2  //2x2 grid of mounted washers
     #endif
