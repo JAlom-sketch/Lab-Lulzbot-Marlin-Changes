@@ -37,7 +37,7 @@ bool ConfirmAutoCalibrationDialogBox::onTouchEnd(uint8_t tag) {
   switch (tag) {
     case 1:
       GOTO_SCREEN(StatusScreen);
-      injectCommands(F("G425"));
+      injectCommands(F("G28\nG425"));
       return true;
     default:
       return DialogBoxBaseClass::onTouchEnd(tag);
