@@ -1070,7 +1070,7 @@
 // If the Nozzle or Bed falls when the Z stepper is disabled, set its resting position here.
 //#define Z_AFTER_DEACTIVATE Z_HOME_POS
 
-#if ANY(TAZPro,MiniV2)
+#if ANY(TAZPro, TAZProXT, MiniV2)
   #define HOME_AFTER_DEACTIVATE  // Require rehoming after steppers are deactivated
 #endif
 
@@ -1257,8 +1257,13 @@
 
   // Define the pin to read during calibration
   #ifndef CALIBRATION_PIN
-    //#define CALIBRATION_PIN -1            // Define here to override the default pin
-    #define CALIBRATION_PIN_INVERTING false // Set to true to invert the custom pin
+    #if defined(LULZBOT_BLTouch) && ANY(TAZPro, TAZProXT)
+      #define CALIBRATION_PIN 31 // Override in pins.h or set to -1 to use your Z endstop
+      #define CALIBRATION_PIN_INVERTING true // Set to true to invert the pin
+    #else
+      #define CALIBRATION_PIN -1 // Override in pins.h or set to -1 to use your Z endstop
+      #define CALIBRATION_PIN_INVERTING false // Set to true to invert the pin
+    #endif
     //#define CALIBRATION_PIN_PULLDOWN
     #define CALIBRATION_PIN_PULLUP
   #endif
@@ -2164,7 +2169,9 @@
  * Repeatedly attempt G29 leveling until it succeeds.
  * Stop after G29_MAX_RETRIES attempts.
  */
-#define G29_RETRY_AND_RECOVER
+#if DISABLED(LULZBOT_BLTouch)
+  #define G29_RETRY_AND_RECOVER
+#endif
 #if ENABLED(G29_RETRY_AND_RECOVER)
   #define G29_MAX_RETRIES 3
   #define G29_HALT_ON_FAILURE
@@ -3138,7 +3145,7 @@
    * When disabled, Marlin will use spreadCycle stepping mode.
    */
   //#define STEALTHCHOP_XY
-  #define STEALTHCHOP_Z
+  //#define STEALTHCHOP_Z
   #define STEALTHCHOP_I
   #define STEALTHCHOP_J
   #define STEALTHCHOP_K
@@ -4176,6 +4183,9 @@
 
     #define MAIN_MENU_ITEM_9_DESC "H175|0.50mm|NKL-PL CU"
     #define MAIN_MENU_ITEM_9_GCODE "M92E409\nM301P" charH175_DEFAULT_Kp "I" charH175_DEFAULT_Ki "D" charH175_DEFAULT_Kd "\nM906E" E_CURRENT_Aero "\nM500\nM117 H175|0.50mm|NKL-PL CU"
+      
+    #define MAIN_MENU_ITEM_10_DESC "Lulz|0.50mm|CRB CU"
+    #define MAIN_MENU_ITEM_10_GCODE "M92E715\nM301P" charM175_DEFAULT_Kp "I" charM175_DEFAULT_Ki "D" charM175_DEFAULT_Kd "\nM906E" E_CURRENT_Aero "\nM500\nM117 Lulz|0.50mm|CRB CU"
   #else
     #define MAIN_MENU_ITEM_3_DESC "M175v2|0.50mm|CRB CU"
     #define MAIN_MENU_ITEM_3_GCODE "M92E415\nM206Y0\nM301P" charM175_DEFAULT_Kp "I" charM175_DEFAULT_Ki "D" charM175_DEFAULT_Kd "\nM907E" E_CURRENT_BMG "\nM412 S1\nM500\nM117 M175v2|0.50mm|CRB CU"
@@ -4197,8 +4207,10 @@
 
     #define MAIN_MENU_ITEM_9_DESC "H175|0.50mm|NKL-PL CU"
     #define MAIN_MENU_ITEM_9_GCODE "M92E409\nM206Y0\nM301P" charH175_DEFAULT_Kp "I" charH175_DEFAULT_Ki "D" charH175_DEFAULT_Kd "\nM906E" E_CURRENT_Aero "\nM412 S1\nM500\nM117 H175|0.50mm|NKL-PL CU"
+    
+    #define MAIN_MENU_ITEM_10_DESC "Lulz|0.50mm|CRB CU"
+    #define MAIN_MENU_ITEM_10_GCODE "M92E715\nM301P" charM175_DEFAULT_Kp "I" charM175_DEFAULT_Ki "D" charM175_DEFAULT_Kd "\nM906E" E_CURRENT_Aero "\nM500\nM117 Lulz|0.50mm|CRB CU"
   #endif
-
   #if defined(TAZ6)
     #define MAIN_MENU_ITEM_1_DESC "Standard|0.5mm"
     #define MAIN_MENU_ITEM_1_GCODE "M92E833\nM206Y4\nM301P" charTAZ6_STD_DEFAULT_Kp "I" charTAZ6_STD_DEFAULT_Ki "D" charTAZ6_STD_DEFAULT_Kd "\nM907E" E_CURRENT_Std "\nM412 S0\nM500\nM117 Standard|0.5mm"
