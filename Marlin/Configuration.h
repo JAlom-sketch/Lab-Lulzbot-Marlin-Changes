@@ -10,7 +10,7 @@
 //#define TazDualZ
 #define LULZBOT_FILAMENT_RUNOUT
 /************** Uncomment a Tool Head Option From Below *********************/
-#define LULZBOT_UNIVERSAL_TOOLHEAD
+//#define LULZBOT_UNIVERSAL_TOOLHEAD
 //#define TOOLHEAD_SL_SE_HE
 //#define TOOLHEAD_HS_HSPLUS
 //#define TOOLHEAD_H175
@@ -18,6 +18,7 @@
 //#define TOOLHEAD_SK175
 //#define TOOLHEAD_SK285
 //#define TOOLHEAD_Quiver_DualExtruder            // TAZ Pro Dual Extruder
+#define TOOLHEAD_Twin_Nebula_175            // TAZ Pro Dual Extruder
 //#define TOOLHEAD_Albatross_Flexystruder         // TAZ Legacy Flexystruder
 //#define TOOLHEAD_Finch_Aerostruder              // TAZ Legacy Titan Aerostruder v1 0.50 mm
 //#define TOOLHEAD_Tilapia_SingleExtruder         // TAZ Legacy Standard Single Extruder 
@@ -384,6 +385,7 @@
   #define LULZBOT_TOOLHEAD_Y_MIN_ADJ             0
   #define LULZBOT_TOOLHEAD_Z_MAX_ADJ             0
   #define LULZBOT_TOOLHEAD_Z_MIN_ADJ             0
+  #define LULZBOT_E_STEPS                        420
   #if ANY(TAZ6, Workhorse)
     #define LULZBOT_MOTOR_CURRENT_E0          177 // Values 0-255 (RAMBO 135 = ~0.75A, 185 = ~1A)
   #else
@@ -399,9 +401,13 @@
 #elif defined(TOOLHEAD_H175)
   #undef LULZBOT_M115_EXTRUDER_TYPE
   #define LULZBOT_M115_EXTRUDER_TYPE       "H175"
+  #undef LULZBOT_E_STEPS
+  #define LULZBOT_E_STEPS                  409
 #elif defined(TOOLHEAD_M175)
   #undef LULZBOT_M115_EXTRUDER_TYPE
   #define LULZBOT_M115_EXTRUDER_TYPE       "M175v2"
+  #undef LULZBOT_E_STEPS
+  #define LULZBOT_E_STEPS                  415
 #elif defined(TOOLHEAD_SK175)
   #undef LULZBOT_M115_EXTRUDER_TYPE
   #define LULZBOT_M115_EXTRUDER_TYPE       "SK175"
@@ -440,6 +446,36 @@
     #define LULZBOT_MOTOR_CURRENT_E1               960 // mA
     #define SWITCHING_NOZZLE
 #endif /* TOOLHEAD_Quiver_DualExtruder */
+
+#if defined(TOOLHEAD_Twin_Nebula_175)
+    #define LULZBOT_LCD_TOOLHEAD_NAME              "Twin Nebula"
+//          16 chars max                            ^^^^^^^^^^^^^^^
+    #define LULZBOT_M115_EXTRUDER_TYPE             "DualExtruder"
+    #define LULZBOT_TOOLHEAD_X_MAX_ADJ             -21
+    #define LULZBOT_TOOLHEAD_X_MIN_ADJ             -21
+    #define LULZBOT_TOOLHEAD_Y_MAX_ADJ             -21
+    #define LULZBOT_TOOLHEAD_Y_MIN_ADJ             -21
+    #define LULZBOT_TOOLHEAD_Z_MAX_ADJ             -23.7
+    #define LULZBOT_TOOLHEAD_Z_MIN_ADJ             -23.7
+    #define LULZBOT_EXTRUDERS                       2
+    #define LULZBOT_TOOLCHANGE_ZRAISE               0
+    #define LULZBOT_NUM_SERVOS                      2
+    #define LULZBOT_SERVO_DELAY                    {500, 500}
+    #define LULZBOT_SWITCHING_NOZZLE
+    #define LULZBOT_SWITCHING_NOZZLE_E1_SERVO_NR   1
+    #define LULZBOT_SWITCHING_NOZZLE_SERVO_ANGLES  { 75,   125}
+    #define LULZBOT_SWITCHING_NOZZLE_OPPOSING_SERVOS
+    #define LULZBOT_HOTEND_OFFSET_X                {0.0, 44}
+    #define LULZBOT_HOTEND_OFFSET_Y                {0.0,  0}//M301 E1 P16.68 I1.07 D64.7
+    #define LULZBOT_E_STEPS                        410
+    #define LULZBOT_X_MAX_ENDSTOP_INVERTING        LULZBOT_NO_ENDSTOP
+    #define LULZBOT_SLICE_MOS_PID
+    #define LULZBOT_TEMP_SENSOR_1                  5
+    #define LULZBOT_MOTOR_CURRENT_E0               750 // mA
+    #define LULZBOT_MOTOR_CURRENT_E1               750 // mA
+    #define SWITCHING_NOZZLE
+#endif /* TOOLHEAD_Twin_Nebula_175 */
+
 
 /********************************* OTHER TOOLHEADS ***************************/
 
@@ -748,7 +784,7 @@
 //#define MAX31865_SENSOR_OHMS_1      100
 //#define MAX31865_CALIBRATION_OHMS_1 430
 
-#if defined(TOOLHEAD_Quiver_DualExtruder) // Shorten time that Dual Extruder has to wait for M109
+#if ANY(TOOLHEAD_Quiver_DualExtruder, TOOLHEAD_Twin_Nebula_175) // Shorten time that Dual Extruder has to wait for M109
   #define TEMP_RESIDENCY_TIME 5         // (seconds) Time to wait for hotend to "settle" in M109
 #else
   #define TEMP_RESIDENCY_TIME 10        // (seconds) Time to wait for hotend to "settle" in M109
@@ -934,7 +970,7 @@
       #define DEFAULT_Ki H175_DEFAULT_Ki
       #define DEFAULT_Kd H175_DEFAULT_Kd
     
-    #elif ENABLED(TOOLHEAD_M175)
+    #elif ANY(TOOLHEAD_M175, LULZBOT_SLICE_MOS_PID)
       #define DEFAULT_Kp M175_DEFAULT_Kp
       #define DEFAULT_Ki M175_DEFAULT_Ki
       #define DEFAULT_Kd M175_DEFAULT_Kd
@@ -1322,11 +1358,11 @@
  *                                      X, Y, Z [, I [, J [, K]]], E0 [, E1[, E2...]]
  */
 #if ANY(MiniV2, Sidekick_289, Sidekick_747)
-  #define DEFAULT_AXIS_STEPS_PER_UNIT   { 100, 100, 200, 420 }
+  #define DEFAULT_AXIS_STEPS_PER_UNIT   { 100, 100, 200, LULZBOT_E_STEPS }
 #elif ENABLED(TAZ6)
   #define DEFAULT_AXIS_STEPS_PER_UNIT   { 100, 100, 1600, 833 }
 #elif ANY(Workhorse, TAZPro, TAZProXT)
-    #define DEFAULT_AXIS_STEPS_PER_UNIT   { 100, 100, 500, 420 }
+    #define DEFAULT_AXIS_STEPS_PER_UNIT   { 100, 100, 500, LULZBOT_E_STEPS }
 #endif
 
 /**
@@ -1641,7 +1677,7 @@
 #elif ENABLED(Workhorse)
   #define PROBE_SAFE_POINT { -10, -10 }
 #elif ANY(TAZPro, TAZProXT)
-  #if defined(TOOLHEAD_Quiver_DualExtruder)
+  #if ANY(TOOLHEAD_Quiver_DualExtruder, TOOLHEAD_Twin_Nebula_175)
     #define PROBE_SAFE_POINT { -6, -9 } //safe probe point for dual extruder on Pro/XT
   #else
     #define PROBE_SAFE_POINT { -1, -9 } //safe probe point for single extruder toolheads on Pro/XT
@@ -1894,7 +1930,7 @@
   #define LULZBOT_Z_MAX_POS 297
 
 #elif ENABLED(TAZPro) 
-   #if defined(TOOLHEAD_Quiver_DualExtruder)
+   #if ANY(TOOLHEAD_Quiver_DualExtruder, TOOLHEAD_Twin_Nebula_175)
     #define X_BED_SIZE 281
     #define Y_BED_SIZE 283
     // Travel limits (mm) after homing, corresponding to endstop positions.
@@ -1916,7 +1952,7 @@
     #define LULZBOT_Z_MAX_POS 299 
   #endif
 #elif ENABLED(TAZProXT)
-    #if defined(TOOLHEAD_Quiver_DualExtruder)
+    #if ANY(TOOLHEAD_Quiver_DualExtruder, TOOLHEAD_Twin_Nebula_175)
     #define X_BED_SIZE 281
     #define Y_BED_SIZE 283
     // Travel limits (mm) after homing, corresponding to endstop positions.
@@ -2583,7 +2619,7 @@
   #elif ANY(TAZPro, TAZProXT) && ENABLED(LULZBOT_UNIVERSAL_TOOLHEAD)
     #define NOZZLE_CLEAN_START_POINT { 300, 95, 1 }
     #define NOZZLE_CLEAN_END_POINT   { 300, 25, 1 }
-  #elif ANY(TAZPro, TAZProXT) && ENABLED(TOOLHEAD_Quiver_DualExtruder) 
+  #elif ANY(TAZPro, TAZProXT) && ANY(TOOLHEAD_Quiver_DualExtruder, TOOLHEAD_Twin_Nebula_175) 
     #define NOZZLE_CLEAN_START_POINT {{ -17, 95, 1 }, { 297, 95, 1 }}
     #define NOZZLE_CLEAN_END_POINT   {{ -17, 25, 1 }, { 297, 25, 1 }}
   #else
@@ -2620,7 +2656,7 @@
     #define WIPE_SEQUENCE_COMMANDS "G28O\nM117 Wiping nozzle\nT0\nG1 X-17 Y25 Z10 F4000\nG1 Z1\nM114\nG1 X-17 Y25\nG1 X-17 Y95\nG1 X-17 Y25\nG1 X-17 Y95\nG1 X-17 Y25\nG1 X-17 Y95\nG1 X-17 Y25\nG1 X-17 Y95\nG1 X-17 Y25\nG1 X-17 Y95\nG1 X-17 Y25\nG1 X-17 Y95\nG1 Z15\nM400\nM117 Wipe Complete"
   #elif ANY(TAZPro, TAZProXT) && ENABLED(LULZBOT_UNIVERSAL_TOOLHEAD)
     #define WIPE_SEQUENCE_COMMANDS "G28O\nM117 Wiping nozzle\nT0\nG1 X300 Y25 Z10 F4000\nG1 Z-1 F4000\nM114\nG1 Y25 F4000\nG1 Y95 F4000\nG1 Y25 F4000\nG1 Y95 F4000\nG1 Y25 F4000\nG1 Y95 F4000\nG1 Y25 F4000\nG1 Y95 F4000\nG1 Y25 F4000\nG1 Y95 F4000\nG1 Y25 F4000\nG1 Y95 F4000\nG1 Z15 F4000\nM400\nG0 Y-9.0 F4000\nM117 Wipe Complete"
-  #elif ANY(TAZPro, TAZProXT) && ENABLED(TOOLHEAD_Quiver_DualExtruder) 
+  #elif ANY(TAZPro, TAZProXT) && ANY(TOOLHEAD_Quiver_DualExtruder, TOOLHEAD_Twin_Nebula_175) 
     #define WIPE_SEQUENCE_COMMANDS "G1 X-17 Y25 Z10 F4000\nT0\nG1 Z-1\nM114\nG1 X-17 Y25\nG1 X-17 Y95\nG1 X-17 Y25\nG1 X-17 Y95\nG1 X-17 Y25\nG1 X-17 Y95\nG1 X-17 Y25\nG1 X-17 Y95\nG1 X-17 Y25\nG1 X-17 Y95\nG1 X-17 Y25\nG1 X-17 Y95\nG1 Z15\nM400"
   #endif
 #endif

@@ -1121,7 +1121,7 @@
     #define CALIBRATION_MEASURE_LEFT
     #define CALIBRATION_MEASURE_BACK
   #elif ANY(TAZPro, TAZProXT)
-    #if defined(TOOLHEAD_Quiver_DualExtruder)
+    #if ANY(TOOLHEAD_Quiver_DualExtruder, TOOLHEAD_Twin_Nebula_175)
       #define CALIBRATION_OBJECT_CENTER     {261.5, -18, -2.0} //  mm
       #define CALIBRATION_OBJECT_DIMENSIONS {10.0, 10.0, 10.0} //  mm
       #define CALIBRATION_MEASURE_FRONT
@@ -2897,7 +2897,7 @@
    * When disabled, Marlin will use spreadCycle stepping mode.
    */
   //#define STEALTHCHOP_XY
-  #define STEALTHCHOP_Z
+  //#define STEALTHCHOP_Z
   //#define STEALTHCHOP_I
   //#define STEALTHCHOP_J
   //#define STEALTHCHOP_K
@@ -3809,7 +3809,7 @@
  * User-defined menu items to run custom G-code.
  * Up to 25 may be defined, but the actual number is LCD-dependent.
  */
-
+#define CUSTOM_MENU_MAIN_TITLE "Tool Heads"
 // Custom Menu: Main Menu
 #if defined(LULZBOT_UNIVERSAL_TOOLHEAD)
   
@@ -3826,7 +3826,7 @@
     #define TAZ6_DEFAULT_PID "P28.79I1.91D108.51"
     #define DEFAULT_PID "P21.0I1.78D61.93"
 
-    #if ANY(TAZ6, Workhorse) //conversion to digipot units = ((mA-750)/5+135)
+    #if ANY(TAZ6, Workhorse) //conversion to digipot units = ((mA-750)/5+135) (x-750)/5+135 = 150
       #define E_CURRENT_Aero "160" //((875-750)/5+135) = 160
       #define E_CURRENT_Std  "135" //((750-750)/5+135) = 135
       #define E_CURRENT_BMG  "160" //((875-750)/5+135) = 160
