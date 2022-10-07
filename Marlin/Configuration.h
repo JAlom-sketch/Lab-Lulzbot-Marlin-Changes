@@ -3034,7 +3034,7 @@
 // RepRapDiscount FULL GRAPHIC Smart Controller
 // https://reprap.org/wiki/RepRapDiscount_Full_Graphic_Smart_Controller
 //
-#if DISABLED(TAZPro, TAZProXT)
+#if DISABLED(TAZPro, TAZProXT, MiniV3)
   #define REPRAP_DISCOUNT_FULL_GRAPHIC_SMART_CONTROLLER
 
   #define ST7920_DELAY_1 DELAY_NS(200) // After CLK LOW
@@ -3250,7 +3250,7 @@
 // Touch UI for FTDI EVE (FT800/FT810) displays
 // See Configuration_adv.h for all configuration options.
 //
-#if ANY(TAZPro, TAZProXT)
+#if ANY(TAZPro, TAZProXT, MiniV3)
   #define TOUCH_UI_FTDI_EVE
 #endif
 
