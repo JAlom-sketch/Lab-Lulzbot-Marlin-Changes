@@ -89,8 +89,12 @@ void ControllerFan::update() {
     );
 
     // Allow digital or PWM fan output (see M42 handling)
-    WRITE(CONTROLLER_FAN_PIN, speed);
-    analogWrite(pin_t(CONTROLLER_FAN_PIN), speed);
+    //WRITE(CONTROLLER_FAN_PIN, speed);
+    #if ENABLED(FAST_PWM_FAN)
+      set_pwm_duty(CONTROLLER_FAN_PIN, speed);
+    #else
+      analogWrite(pin_t(CONTROLLER_FAN_PIN), speed);
+    #endif
   }
 }
 
