@@ -1630,7 +1630,7 @@
  * controller events, as there is a trade-off between reliable
  * printing performance versus fast display updates.
  */
-#if ANY(MiniV2, MiniV3, Sidekick_289, Sidekick_747, TAZ6, Workhorse, HAS_MARLINUI_U8GLIB)
+#if ANY(MiniV2, Sidekick_289, Sidekick_747, TAZ6, Workhorse, HAS_MARLINUI_U8GLIB)
   // Show SD percentage next to the progress bar
   //#define DOGM_SD_PERCENT
 
@@ -1794,12 +1794,18 @@
 
   // Correct the resolution if not using the stock TFT panel.
   //#define TOUCH_UI_320x240
-  //#define TOUCH_UI_480x272
-  #define TOUCH_UI_800x480
+  #if ENABLED(MiniV3)
+    #define TOUCH_UI_480x272
+  #else
+    #define TOUCH_UI_800x480
+  #endif
 
   // Mappings for boards with a standard RepRapDiscount Display connector
-  //#define AO_EXP1_PINMAP      // AlephObjects CLCD UI EXP1 mapping
-  #define AO_EXP2_PINMAP      // AlephObjects CLCD UI EXP2 mapping
+  #if ENABLED(MiniV3)
+    #define AO_EXP1_PINMAP      // AlephObjects CLCD UI EXP1 mapping
+  #else
+    #define AO_EXP2_PINMAP      // AlephObjects CLCD UI EXP2 mapping
+  #endif
   //#define CR10_TFT_PINMAP     // Rudolph Riedel's CR10 pin mapping
   //#define S6_TFT_PINMAP       // FYSETC S6 pin mapping
   //#define F6_TFT_PINMAP       // FYSETC F6 pin mapping
@@ -1936,7 +1942,7 @@
   #define BABYSTEP_ZPROBE_OFFSET          // Combine M851 Z and Babystepping
   #if ENABLED(BABYSTEP_ZPROBE_OFFSET)
     //#define BABYSTEP_HOTEND_Z_OFFSET      // For multiple hotends, babystep relative Z offsets
-    #if DISABLED(TAZPro, TAZProXT)
+    #if DISABLED(TAZPro, TAZProXT, MiniV3)
       #define BABYSTEP_ZPROBE_GFX_OVERLAY   // Enable graphical overlay on Z-offset editor
     #endif
   #endif
