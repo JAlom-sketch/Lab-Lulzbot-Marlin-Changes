@@ -32,7 +32,11 @@
 class MediaFileReader {
   private:
     #if ENABLED(SDSUPPORT)
-      DiskIODriver_USBFlash card; // Allows use of flash drive
+      #if ENABLED(MiniV3)
+        DiskIODriver_SPI_SD card; //MiniV3 with TouchUI and SD card doesn't compile with USBFlash
+      #else
+        DiskIODriver_USBFlash card; // Allows use of flash drive
+      #endif
       SdVolume volume;
       SdFile   root, file;
     #endif
