@@ -3787,10 +3787,6 @@
   #else
     #define STARTUP_COMMANDS "M906 Z450\nG91\nG0 Z20\nG90\nG28 X\nM906 Z975"
   #endif
-#elif ENABLED(TAZ6)
-  #define STARTUP_COMMANDS "G28 X"
-#else
-  #define STARTUP_COMMANDS "G28 Z"
 #endif
 
 /**
