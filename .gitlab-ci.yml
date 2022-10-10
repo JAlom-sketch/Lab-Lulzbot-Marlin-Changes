@@ -17,7 +17,7 @@ before_script:
 
 build_all:
   rules:
-   - if $CI_COMMIT_TITLE =~ /^BUILD.*/
+    - if $CI_COMMIT_TITLE =~ /^BUILD.*/
   stage: build
   script:
     - pio run -e $PIO_ENV
