@@ -10,7 +10,7 @@
 //#define TazDualZ
 #define LULZBOT_FILAMENT_RUNOUT
 /************** Uncomment a Tool Head Option From Below *********************/
-#define LULZBOT_UNIVERSAL_TOOLHEAD
+//#define LULZBOT_UNIVERSAL_TOOLHEAD
 //#define TOOLHEAD_SL_SE_HE
 //#define TOOLHEAD_HS_HSPLUS
 //#define TOOLHEAD_H175
@@ -18,7 +18,7 @@
 //#define TOOLHEAD_SK175
 //#define TOOLHEAD_SK285
 //#define TOOLHEAD_Quiver_DualExtruder            // TAZ Pro Dual Extruder
-//#define TOOLHEAD_Twin_Nebula_175            // TAZ Pro Dual Extruder
+#define TOOLHEAD_Twin_Nebula_175            // TAZ Pro Dual Extruder
 //#define TOOLHEAD_Albatross_Flexystruder         // TAZ Legacy Flexystruder
 //#define TOOLHEAD_Finch_Aerostruder              // TAZ Legacy Titan Aerostruder v1 0.50 mm
 //#define TOOLHEAD_Tilapia_SingleExtruder         // TAZ Legacy Standard Single Extruder 
