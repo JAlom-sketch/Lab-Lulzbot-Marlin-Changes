@@ -262,25 +262,48 @@ const char str_t_thermal_runaway[] PROGMEM = STR_T_THERMAL_RUNAWAY,
   redundant_temp_info_t Temperature::temp_redundant;
 #endif
 
-#if ENABLED(AUTO_POWER_E_FANS)
-  uint8_t Temperature::autofan_speed[HOTENDS]; // = { 0 }
+#if EITHER(AUTO_POWER_E_FANS, HAS_FANCHECK)
+  uint8_t Temperature::autofan_speed[HOTENDS] = {FAN_OFF_PWM};
 #endif
 
 #if ENABLED(AUTO_POWER_CHAMBER_FAN)
-  uint8_t Temperature::chamberfan_speed; // = 0
+  uint8_t Temperature::chamberfan_speed = {FAN_OFF_PWM}
 #endif
 
 #if ENABLED(AUTO_POWER_COOLER_FAN)
-  uint8_t Temperature::coolerfan_speed; // = 0
+  uint8_t Temperature::coolerfan_speed = {FAN_OFF_PWM};
 #endif
 
+#if BOTH(FAN_SOFT_PWM, USE_CONTROLLER_FAN)
+  uint8_t Temperature::soft_pwm_controller_speed = {FAN_OFF_PWM};
+#endif
+
+// Init fans according to whether they're native PWM or Software PWM
+#ifdef BOARD_OPENDRAIN_MOSFETS
+  #define _INIT_SOFT_FAN(P) OUT_WRITE_OD(P, FAN_INVERTING ? LOW : HIGH)
+#else
+  #define _INIT_SOFT_FAN(P) OUT_WRITE(P, FAN_INVERTING ? LOW : HIGH)
+#endif
+#if ENABLED(FAN_SOFT_PWM)
+  #define _INIT_FAN_PIN(P) _INIT_SOFT_FAN(P)
+#else
+  #define _INIT_FAN_PIN(P) do{ if (PWM_PIN(P)) SET_PWM(P); else _INIT_SOFT_FAN(P); }while(0)
+#endif
+#if ENABLED(FAST_PWM_FAN)
+  #define SET_FAST_PWM_FREQ(P) hal.set_pwm_frequency(pin_t(P), FAST_PWM_FAN_FREQUENCY)
+#else
+  #define SET_FAST_PWM_FREQ(P) NOOP
+#endif
+#define INIT_FAN_PIN(P) do{ _INIT_FAN_PIN(P); SET_FAST_PWM_FREQ(P); }while(0)
+
+// HAS_FAN does not include CONTROLLER_FAN
 #if HAS_FAN
 
-  uint8_t Temperature::fan_speed[FAN_COUNT]; // = { 0 }
+  uint8_t Temperature::fan_speed[FAN_COUNT] = {FAN_OFF_PWM};
 
   #if ENABLED(EXTRA_FAN_SPEED)
 
-    Temperature::extra_fan_t Temperature::extra_fan_speed[FAN_COUNT];
+    Temperature::extra_fan_t Temperature::extra_fan_speed[FAN_COUNT] = {FAN_OFF_PWM};
 
     /**
      * Handle the M106 P<fan> T<speed> command:
@@ -307,7 +330,7 @@ const char str_t_thermal_runaway[] PROGMEM = STR_T_THERMAL_RUNAWAY,
 
   #if EITHER(PROBING_FANS_OFF, ADVANCED_PAUSE_FANS_PAUSE)
     bool Temperature::fans_paused; // = false;
-    uint8_t Temperature::saved_fan_speed[FAN_COUNT]; // = { 0 }
+    uint8_t Temperature::saved_fan_speed[FAN_COUNT] = {FAN_OFF_PWM};
   #endif
 
   #if ENABLED(ADAPTIVE_FAN_SLOWING)
