@@ -70,7 +70,7 @@ bool MainMenu::onTouchEnd(uint8_t tag) {
   switch (tag) {
     case 1: SaveSettingsDialogBox::promptToSaveSettings();                               break;
     case 2: GOTO_SCREEN(BioConfirmHomeXYZ);                                              break;
-    case 3: SpinnerDialogBox::enqueueAndWait_P(e_homed ? F("G0 E0 F120") : F("G112"));   break;
+    case 3: SpinnerDialogBox::enqueueAndWait_P(F("G112"));   break;
     case 4: StatusScreen::unlockMotors();                                                break;
     case 5: SpinnerDialogBox::enqueueAndWait_P(F(LULZBOT_AXIS_LEVELING_COMMANDS));       break;
     case 6: GOTO_SCREEN(TemperatureScreen);                                              break;
