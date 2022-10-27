@@ -504,22 +504,22 @@ namespace ExtUI {
     void  setAxisCurrent_mA(const float mA, const extruder_t extruder) {
       switch (extruder) {
         #if AXIS_IS_TMC(E0)
-          case E0: stepperE0.rms_current(constrain(mA, 500, 1500)); break;
+          case E0: stepperE0.rms_current(constrain(mA, 150, 1500)); break;
         #endif
         #if AXIS_IS_TMC(E1)
-          case E1: stepperE1.rms_current(constrain(mA, 500, 1500)); break;
+          case E1: stepperE1.rms_current(constrain(mA, 150, 1500)); break;
         #endif
         #if AXIS_IS_TMC(E2)
-          case E2: stepperE2.rms_current(constrain(mA, 500, 1500)); break;
+          case E2: stepperE2.rms_current(constrain(mA, 150, 1500)); break;
         #endif
         #if AXIS_IS_TMC(E3)
-          case E3: stepperE3.rms_current(constrain(mA, 500, 1500)); break;
+          case E3: stepperE3.rms_current(constrain(mA, 150, 1500)); break;
         #endif
         #if AXIS_IS_TMC(E4)
-          case E4: stepperE4.rms_current(constrain(mA, 500, 1500)); break;
+          case E4: stepperE4.rms_current(constrain(mA, 150, 1500)); break;
         #endif
         #if AXIS_IS_TMC(E5)
-          case E5: stepperE5.rms_current(constrain(mA, 500, 1500)); break;
+          case E5: stepperE5.rms_current(constrain(mA, 150, 1500)); break;
         #endif
         default: break;
       };
