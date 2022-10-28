@@ -1797,7 +1797,7 @@
 
   #if AXIS_IS_TMC(Z)
     #define Z_CURRENT     960 // <-- changed
-    #define Z_MICROSTEPS   16 // <-- changed
+    #define Z_MICROSTEPS   32 // <-- changed
     #define Z_RSENSE     0.12 // <-- changed
     #define Z_CHAIN_POS     0
   #endif
