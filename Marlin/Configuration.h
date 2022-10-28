@@ -37,6 +37,7 @@
  *
  */
 #define CONFIGURATION_H_VERSION 020000
+#define LULZBOT_FW_VERSION ".176"
 
 //===========================================================================
 //============================= Getting Started =============================
@@ -716,7 +717,7 @@
  * Override with M92
  *                                      X, Y, Z, E0 [, E1[, E2[, E3[, E4[, E5]]]]]
  */
-#define DEFAULT_AXIS_STEPS_PER_UNIT   {100, 100, 1000, 9448.8} // <-- changed
+#define DEFAULT_AXIS_STEPS_PER_UNIT   {100, 100, 500, 9448.8} // <-- changed
 
 /**
  * Default Max Feed Rate (mm/s)
@@ -2221,8 +2222,8 @@
  * Extra modifications to Marlin
  */
 //#define LULZBOT_WIPE_SEQUENCE_COMMANDS
-#define LULZBOT_AXIS_LEVELING_COMMANDS "M117 Leveling X Axis\nG28\nG0 X170 Y75 F9999\nG0 Z5 F6000\nG91\nM211 S0\nM400\nM906 Z150\nG0 Z-15 F500\nG0 Z5 F500\nM400\nG90\nM906 Z960\nM211 S1\nG28 Z0\nM117 Leveling done." // <-- changed
-//#define LULZBOT_CALIBRATION_COMMANDS                                                                                     //600
+#define LULZBOT_AXIS_LEVELING_COMMANDS "M117 Leveling X Axis\nG0 X170 F9999\nG0 Z5 F6000\nG91\nM211 S0\nM400\nM906 Z150\nG0 Z-15 F500\nG0 Z5 F500\nM400\nG90\nM906 Z960\nM211 S1\nG28 Z0\nM117 Leveling done." // <-- changed
+//#define LULZBOT_CALIBRATION_COMMANDS
 #define LULZBOT_M226_PIN_PROTECTION_WORKAROUND // <-- changed
 #define LULZBOT_M226_NON_ARDUINO_PINS_WORKAROUND // <-- changed
 //#define LULZBOT_RUNOUT_HANDLING_WORKAROUND
@@ -2277,7 +2278,6 @@
 #define LULZBOT_USE_BIOPRINTER_GCODE // <-- changed
 #define LULZBOT_USE_BIOPRINTER_UI // <-- changed
 #define LULZBOT_DISABLE_TOOLHEAD_HEATER // <-- changed
-#define LULZBOT_AXIS_LEVELING_COMMANDS "M117 Leveling X Axis\nG28\nG0 X170 Y75 F9999\nG0 Z5 F6000\nG91\nM211 S0\nM400\nM906 Z150\nG0 Z-15 F500\nG0 Z5 F500\nM400\nG90\nM906 Z960\nM211 S1\nG28 Z0\nM117 Leveling done." // <-- changed
 #define LULZBOT_PARK_AND_RELEASE_COMMANDS "G0 X115 Z50 F6000\nM400\nM18 X Y" // <-- changed                                  600
 #define LULZBOT_E_TRAVEL_LIMIT 60 // <-- changed
 #define E_MIN_PIN X_MAX_PIN // <-- changed

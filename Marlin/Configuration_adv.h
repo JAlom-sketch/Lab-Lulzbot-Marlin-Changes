@@ -920,7 +920,7 @@
 
   //#define MENU_ADDAUTOSTART               // Add a menu option to run auto#.g files
 
-  #define EVENT_GCODE_SD_STOP "G28 Z\nM117 Print aborted." // <-- changed:  G-code to run on Stop Print (e.g., "G28XY" or "G27")
+  #define EVENT_GCODE_SD_STOP "G28 Z\nG28Y\nG90\nM117 Print aborted." // <-- changed:  G-code to run on Stop Print (e.g., "G28XY" or "G27")
 
   /**
    * Continue after Power-Loss (Creality3D)
@@ -1797,7 +1797,7 @@
 
   #if AXIS_IS_TMC(Z)
     #define Z_CURRENT     960 // <-- changed
-    #define Z_MICROSTEPS   32 // <-- changed
+    #define Z_MICROSTEPS   16 // <-- changed
     #define Z_RSENSE     0.12 // <-- changed
     #define Z_CHAIN_POS     0
   #endif

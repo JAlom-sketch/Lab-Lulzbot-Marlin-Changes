@@ -36,11 +36,6 @@
 #else
 
   /**
-   * LulzBot revision identifier
-   */
-  #define LULZBOT_FW_VERSION ".176"
-
-  /**
    * Marlin release version identifier
    */
   #define SHORT_BUILD_VERSION "2.0.0" LULZBOT_FW_VERSION
