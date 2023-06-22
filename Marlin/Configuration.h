@@ -138,7 +138,7 @@
 
 #if defined(LULZBOT_Quiver_TAZPro)
   #define TAZPro
-  #define LULZBOT_CUSTOM_MACHINE_NAME "LulzBot TAZ Pro"
+  #define LULZBOT_CUSTOM_MACHINE_NAME "Firmware Trial 1"
   #define LULZBOT_LCD_MACHINE_NAME "TAZ Pro"
   #define LULZBOT_MACHINE_UUID "a952577d-8722-483a-999d-acdc9e772b7b"
   #define LULZBOT_USE_ARCHIM2
@@ -453,7 +453,7 @@
     #define LULZBOT_E_STEPS                        420
     #define LULZBOT_X_MAX_ENDSTOP_INVERTING        LULZBOT_NO_ENDSTOP
     #define LULZBOT_E3D_Titan_Aero_V6
-    #define LULZBOT_TEMP_SENSOR_1                  5
+    #define LULZBOT_TEMP_SENSOR_1                  998
     #define LULZBOT_MOTOR_CURRENT_E0               960 // mA
     #define LULZBOT_MOTOR_CURRENT_E1               960 // mA
     #define SWITCHING_NOZZLE
@@ -742,7 +742,7 @@
  *   998 : Dummy Table that ALWAYS reads 25°C or the temperature defined below.
  *   999 : Dummy Table that ALWAYS reads 100°C or the temperature defined below.
  */
-#define TEMP_SENSOR_0 5
+#define TEMP_SENSOR_0 998
 #define TEMP_SENSOR_1 LULZBOT_TEMP_SENSOR_1
 #define TEMP_SENSOR_2 0
 #define TEMP_SENSOR_3 0
